@@ -1,0 +1,69 @@
+:bluescreen_cn
+因为FMDUOS出现了些问题，为了防止你的电脑受到损害而被迫退出运行。
+
+如果这个蓝屏现象是你首次看到，请重启计算机。如果再次出现，请按照下列步骤操作：
+         
+检查硬盘剩余容量以保证你有足够多的硬盘空间，并复制strings.com于操作系统目录(默
+认为 C:\FMDU\SYSDOS)，如果在错误的信息中提到是某个驱动问题，请卸载此驱动或者通
+过制造商来检查此驱动的更新。尝试更改视频适配器(显卡)。检查你的BIOS更新情况。取
+消BIOS存储中的选项例如缓存配置或者阴影配置，如果你要在安全模式下删除或者卸载您
+的软件及驱动，请重启您的电脑，鼠标单击或方向键选择高级选项，然后选择安全模式。
+
+技术信息：strings.com丢失
+[]
+:
+
+:bluescreen_en
+FMDUOS has been shut down because of some problems in order to prevent your comp
+uter damage.
+
+Restart your computer when this is the first time you've seen this stop error sc
+reen,follow these steps when this screen appears again:
+
+Check the averable space to be sure you have adequate disk space,and copy string
+s.com to the path of FMDUOS(default path is C:\FMDU\SYSDOS),If a driver is ident
+ified in the stop message,disable the driver or check with the manufacturer for 
+driver updates.Try changing video adapterscheck with your hardware vendor for an
+y BIOS updates.Disable BIOS memory options such as caching or shadowing if you n
+eed tu use safe Mode to remove or disable software and device,restart your compu
+ter.Mouse clip and use vector key to select advanced startup options,and then se
+lect safe mode.
+
+Techical information:missing strings.com
+:
+
+:bluescreen_missCN
+FMDUOS has been shut down because Chinese character support is missing! Chinese 
+character and special symbol can't be display.
+
+Restart your computer when this is the first time you've seen this stop error sc
+reen,follow these steps when this screen appears again:
+Check the averable space to be sure you have adequate disk space, and copy
+GBKDOS.exe to the path of FMDUOS(default path is C:\FMDU\SYSDOS)and restart the
+computer.
+Techical information:missing GBKDOS.exe
+
+:bluescreen_missSR_cn
+因为FMDUOS的%SRtext%文件丢失导致无法通过操作系统%SRtext%，
+为了防止你的电脑受到损害而被迫退出运行。
+
+如果这个蓝屏现象是你首次看到，请重启计算机。如果再次出现，请按照下列步骤操作：
+
+检查硬盘剩余容量以保证你有足够多的硬盘空间，
+并复制%SRfile%于<根目录>:\FMDU\SYSDOS，然后重启你的电脑。
+技术信息：%SRfile%丢失
+[]
+:
+
+:bluescreen_missSR_en
+Because %srfile% is missing and can't %srtext% by FMDUOS. 
+In order to prevent your computer damage, FMDUOS has been shut down.
+
+Restart your computer when this is the first time you've seen this stop error sc
+reen,follow these steps when this screen appears again:
+
+Check the averable space to be sure you have adequate disk space,
+and copy %SRfile% to <root>:\FMDU\SYSDOS,
+and restart yourcomputer.
+Techical information:missing %SRfile%
+:
