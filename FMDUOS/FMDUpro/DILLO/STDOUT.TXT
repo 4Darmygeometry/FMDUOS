@@ -1,0 +1,10 @@
+paths: Cannot open file 'C:\FMDUpro\DILLO/CONFIG/dillorc'
+paths: Cannot open file '/etc/dillo/dillorc'
+paths: Using internal defaults...
+paths: Cannot open file 'C:\FMDUpro\DILLO/CONFIG/keysrc'
+paths: Cannot open file '/etc/dillo/keysrc'
+paths: Using internal defaults...
+OpenSSL: Insufficient random entropy
+dillo_dns_init: Here we go! (not threaded)
+Enabling cookies as from cookiesrc...
+XOpenIM() failed
