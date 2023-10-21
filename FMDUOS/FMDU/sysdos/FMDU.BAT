@@ -14,7 +14,7 @@ if exist wbat.ini ren wbat.ini gui.ini
 if not exist w.bat goto blackscreen
 if not exist wbat.com goto blackscreen
 if not exist GBKDOS.exe goto bluescreen_missCN
-alias type=wbat list
+alias type=call UTYPE.bat
 if exist LFNON.ini DOSLFN -Z:CP936UNI.GBK >nul
 echo 936>chcp.ini
 GBKDOS.EXE /03>nul
@@ -61,7 +61,6 @@ lh ndos -lfn -mountall -cp:936>nul
 rem ---------------------
 cls
 echo 正在启动FMDUOS...
-HXLDR32.EXE>nul
 goto main
 
 :gjxx
@@ -192,7 +191,6 @@ set hdpmi=16384
 lh hdpmi32 >%FMDUDIR%\jtstart.txt
 lh ndos -lfn -mountall -cp:936 >>%FMDUDIR%\jtstart.txt
 cd %FMDUDIR%\
-HXLDR32.EXE >>jtstart.txt
 goto main
 
 :main
@@ -946,9 +944,37 @@ if "%?%" == "8" goto restart
 [Φ][(*)]
 
 :notepad
-%SYSDRV%\FMDU\PYL\PYL.EXE|cls
-%SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
-call edit.exe %fk0%\%gfile%
+HXLDR32.EXE -q>nul
+iconv -c -f UTF-8 -t gbk %fk0%\%gfile%>nul
+if errorlevel 1 goto notepad_GBK
+iconv -c -f UTF-8 -t gbk %fk0%\%gfile%>%fk0%\mtemp.tmp
+HXLDR32.EXE -u>nul
+wbat list %fk0%\mtemp.tmp
+if errorlevel 100 goto notepad_EXIT
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
+echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
+cls
+call edit.exe %fk0%\mtemp.tmp>nul
+HXLDR32.EXE -q>nul
+iconv -c -f gbk -t UTF-8 %fk0%\mtemp.tmp>%fk0%\%gfile%
+HXLDR32.EXE -u>nul
+goto notepad_EXIT
+
+:notepad_GBK
+HXLDR32.EXE -u>nul
+wbat list %fk0%\%gfile%
+if errorlevel 100 goto notepad_EXIT
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
+echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
+cls
+call edit.exe %fk0%\%gfile%>nul
+goto notepad_EXIT
+
+:notepad_EXIT
+if exist mtemp.tmp del mtemp.tmp
+rem call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE /u>nul
 if exist gui.ini ren gui.ini wbat.ini
 set WBoxFrame="|~|| ||_|"
 set hdpmi=16384
@@ -961,10 +987,14 @@ wbat restore
 gbkcd "%fk0%"
 goto admin_x
 
+
 :jsb
-%SYSDRV%\FMDU\PYL\PYL.EXE|cls
-%SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
-call edit.exe
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
+echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
+cls
+call edit.exe>nul
+rem %SYSDRV%\FMDU\GBKIN\GBKIN.EXE /u>nul
 goto main_m
 
 :calc
@@ -1037,7 +1067,9 @@ if "%?%" == "2" goto tablet
 if "%?%" == "3" goto history
 echo %folder%>>cmd.ini
 if "%folder%" == "exit" goto exit1
-%folder%
+strings code=findc %folder%,/?
+if "%code%"=="0" call %folder%
+if not "%code%"=="0" %folder%
 if "%?%" == "1" goto cmd
 if "%?%" == "100" goto cmd_io
 if not "%?%" == "" goto cmd_io
@@ -2380,6 +2412,7 @@ goto shutdown
 :shutdown
 cls
 echo 正在关机...
+if exist %SYSDRV%\FMDU\PYL\PYL.YAZ del %SYSDRV%\FMDU\PYL\PYL.YAZ
 if exist %FMDUDIR%\WSCREEN.0 del %FMDUDIR%\WSCREEN.0>nul
 if exist safemode.txt del safemode.txt >nul
 if exist cmd.ini del cmd.ini >nul
@@ -2391,6 +2424,7 @@ if exist wbat.ini ren wbat.ini gui.ini
 :restart
 cls
 chcp 437
+if exist %SYSDRV%\FMDU\PYL\PYL.YAZ del %SYSDRV%\FMDU\PYL\PYL.YAZ
 if exist %FMDUDIR%\WSCREEN.0 del %FMDUDIR%\WSCREEN.0>nul
 if exist safemode.txt del safemode.txt >nul
 if exist cmd.ini del cmd.ini >nul
@@ -2401,6 +2435,7 @@ if exist wbat.ini ren wbat.ini gui.ini
 
 :exit1
 cls
+if exist %SYSDRV%\FMDU\PYL\PYL.YAZ del %SYSDRV%\FMDU\PYL\PYL.YAZ
 chcp 437
 echo start to go to the real cmd
 prompt FMDU@FMDU-PC:$P$$>nul
@@ -2411,6 +2446,8 @@ if exist com.ini del com.ini >nul
 if exist 1.com del 1.com >nul
 if exist wbat.ini ren wbat.ini gui.ini
 set inputconfig=
+set cfg=
+set code=
 set wrb=
 set len=
 set random=
