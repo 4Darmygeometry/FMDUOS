@@ -5,7 +5,7 @@ if "%1"=="/?" goto help
 if "%1"=="437" goto ASCII
 if "%1"=="936" goto GBK
 if "%1"=="20936" goto GB2312
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="437" echo The current code page is 437
 if not "%code%"=="437" echo 当前代码页 %code%
 goto exitcp
@@ -16,39 +16,38 @@ if "%2"=="/?" goto helpg
 if "%2"=="437" goto ASCII
 if "%2"=="936" goto GBK
 if "%2"=="20936" goto GB2312
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="437" echo The current code page in graphic mode is 437
 if not "%code%"=="437" echo 当前图形模式代码页 %code%
 
 :ASCII
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="437" goto exitcp
-if "%code%"=="936" GBKDOS>nul
-TW /q>nul
+if "%code%"=="936" GBKDOS /00>nul
+if "%code%"=="20936" TW /q>nul
 echo 437>chcp.ini
 goto exitcp
 
 :GBK
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="936" goto exitcp
-if "%code%"=="437" TW /np>nul
-if "%code%"=="437" KEY PY LX>nul
-GBKDOS>nul
+if "%code%"=="20936" TW /q>nul
+GBKDOS /00>nul
 echo 936>chcp.ini
 cls
 goto exitcp
 
 :GB2312
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="20936" goto exitcp
-if "%code%"=="936" GBKDOS>nul
-if "%code%"=="437" TW /np>nul
-if "%code%"=="437" KEY PY LX>nul
+if "%code%"=="936" GBKDOS /00>nul
+TW /np>nul
+KEY PY LX>nul
 echo 20936>chcp.ini
 goto exitcp
 
 :help
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="437" goto help_en
 if not "%code%"=="437" goto help_cn
 
@@ -65,7 +64,7 @@ echo 不带参数键入 CHCP 以显示当前代码页编号。
 goto exitcp
 
 :helpg
-set /p code=<chcp.ini
+strings code=read chcp.ini,1
 if "%code%"=="437" goto helpg_en
 if not "%code%"=="437" goto helpg_cn
 

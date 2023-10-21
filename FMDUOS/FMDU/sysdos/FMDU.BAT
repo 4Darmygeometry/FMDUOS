@@ -17,9 +17,7 @@ if not exist GBKDOS.exe goto bluescreen_missCN
 alias type=wbat list
 if exist LFNON.ini DOSLFN -Z:CP936UNI.GBK >nul
 echo 936>chcp.ini
-if exist %FMDUDIR%\TW.EXE TW /np>nul
-if exist %FMDUDIR%\TW.EXE KEY PY LX>nul
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 if not exist strings.com goto bluescreen
 if not exist fdapm.com goto bluescreen_missSR
 if not exist restart.com goto bluescreen_missSR
@@ -28,10 +26,10 @@ if exist %FMDUDIR%\metroio\onmetro.ini goto metroio
 rem -------------非metro启动方式----------------------
 ren startup.ini wbat.ini
 :startup
-wbat FIX box 1,1 @fmdu.bat:startup_d #1,3
-if "%errorlevel%" == "1" goto zcqd
-if "%errorlevel%" == "2" goto gjxx
-if "%errorlevel%" == "0" goto shutdown_p
+call w.bat FIX box 1,1 @fmdu.bat:startup_d #1,3
+if "%?%" == "1" goto zcqd
+if "%?%" == "2" goto gjxx
+if "%?%" == "0" goto shutdown_p
 if errorlevel 100 goto shutdown_p
 goto zcqd
 
@@ -67,12 +65,12 @@ HXLDR32.EXE>nul
 goto main
 
 :gjxx
-wbat FIX box 1,1 @fmdu.bat:gjxx_d #1,3
-if "%errorlevel%" == "1" goto safemode
-if "%errorlevel%" == "2" goto safemoden
-if "%errorlevel%" == "3" goto safemodec
-if "%errorlevel%" == "4" goto recordlog
-if "%errorlevel%" == "0" goto startup
+call w.bat FIX box 1,1 @fmdu.bat:gjxx_d #1,3
+if "%?%" == "1" goto safemode
+if "%?%" == "2" goto safemoden
+if "%?%" == "3" goto safemodec
+if "%?%" == "4" goto recordlog
+if "%?%" == "0" goto startup
 if errorlevel 100 goto startup
 goto safemode
 
@@ -96,14 +94,14 @@ rem -------------metro启动方式------------------------
 if exist metro.ini ren metro.ini wbat.ini
 wbat fill (+white on green)
 call w.bat box @fmdu.bat:metroio_d
-if "%errorlevel%" == "1" goto zcqd
-if "%errorlevel%" == "2" goto zcqd
-if "%errorlevel%" == "4" goto zcqd
-if "%errorlevel%" == "3" goto metrogjxx
-if "%errorlevel%" == "5" goto otherosconfig
-if "%errorlevel%" == "6" goto otherosconfig
-if "%errorlevel%" == "7" goto otherosconfig
-if "%errorlevel%" == "0" goto shutdown_p
+if "%?%" == "1" goto zcqd
+if "%?%" == "2" goto zcqd
+if "%?%" == "4" goto zcqd
+if "%?%" == "3" goto metrogjxx
+if "%?%" == "5" goto otherosconfig
+if "%?%" == "6" goto otherosconfig
+if "%?%" == "7" goto otherosconfig
+if "%?%" == "0" goto shutdown_p
 if errorlevel 100 goto shutdown_p
 
 :metroio_d "启动选项" [X]
@@ -121,28 +119,28 @@ if not exist otheros.ini wbat box "操作系统列表暂无操作系统，请手动添加。" 返回
 goto metroio
 
 :otheros
-wbat list @otheros.ini:oslabel
-if "%errorlevel%" == "0" goto metroio
+call w.bat list @otheros.ini:oslabel
+if "%?%" == "0" goto metroio
 if errorlevel 100 goto metroio
 
 :metrogjxx
 call w.bat box @fmdu.bat:metrogjxx_d
-if "%errorlevel%" == "1" goto safemode
-if "%errorlevel%" == "4" goto safemode
-if "%errorlevel%" == "7" goto safemode
-if "%errorlevel%" == "2" goto safemoden
-if "%errorlevel%" == "5" goto safemoden
-if "%errorlevel%" == "8" goto safemoden
-if "%errorlevel%" == "3" goto safemodec
-if "%errorlevel%" == "6" goto safemodec
-if "%errorlevel%" == "9" goto safemodec
-if "%errorlevel%" == "10" goto recordlog
-if "%errorlevel%" == "12" goto recordlog
-if "%errorlevel%" == "14" goto recordlog
-if "%errorlevel%" == "11" goto metrohelp
-if "%errorlevel%" == "13" goto metrohelp
-if "%errorlevel%" == "15" goto metrohelp
-if "%errorlevel%" == "0" goto metroio
+if "%?%" == "1" goto safemode
+if "%?%" == "4" goto safemode
+if "%?%" == "7" goto safemode
+if "%?%" == "2" goto safemoden
+if "%?%" == "5" goto safemoden
+if "%?%" == "8" goto safemoden
+if "%?%" == "3" goto safemodec
+if "%?%" == "6" goto safemodec
+if "%?%" == "9" goto safemodec
+if "%?%" == "10" goto recordlog
+if "%?%" == "12" goto recordlog
+if "%?%" == "14" goto recordlog
+if "%?%" == "11" goto metrohelp
+if "%?%" == "13" goto metrohelp
+if "%?%" == "15" goto metrohelp
+if "%?%" == "0" goto metroio
 if errorlevel 100 goto metroio
 
 :metrogjxx_d "高级选项" [X]
@@ -158,8 +156,8 @@ if errorlevel 100 goto metroio
 
 :metrohelp
 call w.bat box @fmdu.bat:metrohelp_d
-if "%errorlevel%" == "1" goto metrogjxx
-if "%errorlevel%" == "0" goto metrogjxx
+if "%?%" == "1" goto metrogjxx
+if "%?%" == "0" goto metrogjxx
 if errorlevel 100 goto metrogjxx
 
 :metrohelp_d "帮助" [X]
@@ -202,9 +200,9 @@ cls
 if not exist %FMDUDIR%\metroio\onmetro.ini ren wbat.ini startup.ini
 if exist %FMDUDIR%\metroio\onmetro.ini ren wbat.ini metro.ini
 ren gui.ini wbat.ini
-set /p $dtc=<%SYSDRV%\FMDU\colors\dtcolor\dtcolor.txt
-set /p $wnc=<%SYSDRV%\FMDU\colors\wincolor\wincor.txt
-set /p $wtc=<%SYSDRV%\FMDU\colors\wincolor\txtcor.txt
+strings $dtc=read %SYSDRV%\FMDU\colors\dtcolor\dtcolor.txt,1
+strings $wnc=read %SYSDRV%\FMDU\colors\wincolor\wincor.txt,1
+strings $wtc=read %SYSDRV%\FMDU\colors\wincolor\txtcor.txt,1
 if "%$dtc%"=="" set $dtc=+white
 if "%$wnc%"=="" set $wnc=+white
 if "%$wtc%"=="" set $wtc=black
@@ -223,8 +221,7 @@ set WBoxFrame="         "
 if exist temp.txt del temp.txt
 call w.bat FIX box 1,40 (%$wtc% on %$dtc%) @fmdu.bat:desktop_m
 wbat save
-copy %TEMP%\WSCREEN.0 %FMDUDIR%>nul
-del %TEMP%\WSCREEN.0
+move %TEMP%\WSCREEN.0 %FMDUDIR%>nul
 set WBoxFrame="|~|| ||_|"
 if "%?%" == "1" goto startmenu
 if "%?%" == "2" goto srf
@@ -272,8 +269,7 @@ set WBoxFrame="         "
 if exist temp.txt del temp.txt
 call w.bat FIX box 1,40 (%$wtc% on %$dtc%) @fmdu.bat:desktop_safemode
 wbat save
-copy %TEMP%\WSCREEN.0 %FMDUDIR%>nul
-del %TEMP%\WSCREEN.0
+move %TEMP%\WSCREEN.0 %FMDUDIR%>nul
 set WBoxFrame="|~|| ||_|"
 if "%?%" == "1" goto startmenu
 if "%?%" == "2" goto srf
@@ -358,7 +354,7 @@ set wbat=
 if exist wbat.ini ren wbat.ini gui.ini
 if "%len%" == "TXT" goto notepad
 if "%len%" == "INI" goto notepad
-if not "%len%" == "BAT" GBKDOS.EXE>nul
+if not "%len%" == "BAT" GBKDOS.EXE /03>nul
 if "%len%" == "JPG" goto picview
 if "%len%" == "PNG" goto picview
 if "%len%" == "BMP" goto picview
@@ -368,7 +364,7 @@ if "%len%" == "DOC" goto docconfig
 if "%len%" == "PDF" goto pdfconfig
 if "%len%" == "EXE" call %fk0%\%gfile%
 if "%len%" == "COM" call %fk0%\%gfile%
-if not "%len%" == "BAT" GBKDOS.EXE>nul
+if not "%len%" == "BAT" GBKDOS.EXE /03>nul
 if "%len%" == "BAT" call %fk0%\%gfile%
 if exist gui.ini ren gui.ini wbat.ini
 set WBoxFrame="|~|| ||_|"
@@ -388,7 +384,7 @@ goto admin_x
 set folder=%wbat%
 if exist %FMDUDIR%\temp.txt del %FMDUDIR%\temp.txt
 GBKCD>cfg.tmp
-set /p cfg=<cfg.tmp
+strings cfg=read cfg.tmp,1
 if "%cfg%" == "A:\" strings fc=sub %fc% , 1
 if "%cfg%" == "B:\" strings fc=sub %fc% , 1
 if "%cfg%" == "C:\" strings fc=sub %fc% , 1
@@ -424,7 +420,7 @@ goto admin_x
 :admin_m
 gbkcd "%fk0%"
 GBKCD>cfg.tmp
-set /p cfg=<cfg.tmp
+strings cfg=read cfg.tmp,1
 if exist cfg.tmp del cfg.tmp
 if "%cfg%" == "A:\" goto findhd_CFG
 if "%cfg%" == "B:\" goto findhd_CFG
@@ -454,7 +450,7 @@ if "%cfg%" == "Y:\" goto findhd_CFG
 if "%cfg%" == "Z:\" goto findhd_CFG
 gbkcd ..
 GBKCD>cfg.tmp
-set /p cfg=<cfg.tmp
+strings cfg=read cfg.tmp,1
 if "%cfg%" == "A:\" goto findhd_CFG
 if "%cfg%" == "B:\" goto findhd_CFG
 if "%cfg%" == "C:\" goto findhd_CFG
@@ -694,7 +690,7 @@ LFNDIR /AD /B >>%FMDUDIR%\temp.txt
 if exist *.* LFNDIR /A-D /B >>%FMDUDIR%\temp.txt
 echo :>>%FMDUDIR%\temp.txt
 GBKCD>%FMDUDIR%\path.txt
-set /p fk0=<%FMDUDIR%\path.txt
+strings fk0=read %FMDUDIR%\path.txt,1
 goto admin_c
 
 :picview
@@ -707,7 +703,7 @@ if "%$wnc%"=="" set $wnc=+white
 if "%$wtc%"=="" set $wtc=black
 copy %FMDUDIR%\WSCREEN.0 %TEMP%\ >nul
 ctmouse >nul
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 wbat fill (%$wtc% on %$dtc%)
 wbat restore
 gbkcd "%fk0%"
@@ -727,17 +723,17 @@ ren %SYSDRV%\wine\win.ini wine.ini
 SET PATH=%SYSDRV%\FMDU\NTFS;%SYSDRV%\FMDU\SYSX86;%FMDUDIR%
 SET TEMP=C:
 ctmouse>nul
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 goto main
 
 :pptchoice
 %SYSDRV%
 CD %FMDUDIR%\
 if exist gui.ini ren gui.ini wbat.ini
-wbat box @fmdu.bat:pptchoice_m
-if "%errorlevel%" == "0" goto main_m
+call w.bat box @fmdu.bat:pptchoice_m
+if "%?%" == "0" goto main_m
 if errorlevel 100 goto main_m
-if "%errorlevel%" == "1" goto officesetup
+if "%?%" == "1" goto officesetup
 goto main_m
 
 :pptchoice_m [x]
@@ -760,17 +756,17 @@ ren %SYSDRV%\wine\win.ini wine.ini
 SET PATH=%SYSDRV%\FMDU\NTFS;%SYSDRV%\FMDU\SYSX86;%FMDUDIR%
 SET TEMP=C:
 ctmouse>nul
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 goto main
 
 :docchoice
 %SYSDRV%
 CD %FMDUDIR%\
 if exist gui.ini ren gui.ini wbat.ini
-wbat box @fmdu.bat:docchoice_m
-if "%errorlevel%" == "0" goto main_m
+call w.bat box @fmdu.bat:docchoice_m
+if "%?%" == "0" goto main_m
 if errorlevel 100 goto main_m
-if "%errorlevel%" == "1" goto officesetup
+if "%?%" == "1" goto officesetup
 goto main_m
 
 :docchoice_m [x]
@@ -793,17 +789,17 @@ ren %SYSDRV%\wine\win.ini wine.ini
 SET PATH=%SYSDRV%\FMDU\NTFS;%SYSDRV%\FMDU\SYSX86;%FMDUDIR%
 SET TEMP=C:
 ctmouse>nul
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 goto main
 
 :pdfchoice
 %SYSDRV%
 CD %FMDUDIR%\
 if exist gui.ini ren gui.ini wbat.ini
-wbat box @fmdu.bat:pdfchoice_m
-if "%errorlevel%" == "0" goto main_m
+call w.bat box @fmdu.bat:pdfchoice_m
+if "%?%" == "0" goto main_m
 if errorlevel 100 goto main_m
-if "%errorlevel%" == "1" goto officesetup
+if "%?%" == "1" goto officesetup
 goto main_m
 
 :pdfchoice_m [x]
@@ -824,7 +820,7 @@ echo starting unpackage document plus(1/2)
 %FMDUDIR%\unzip.exe %SYSDRV%\fmdu\package\office.zip >nul
 cls
 echo starting unpackage document plus(2/2)
-set /p $dtc=<%SYSDRV%\FMDU\colors\dtcolor\dtcolor.txt
+strings $dtc=read %SYSDRV%\FMDU\colors\dtcolor\dtcolor.txt,1
 if "%$dtc%" == "black" ren %SYSDRV%\wine\black.bmp wallpr.bmp
 if "%$dtc%" == "+black" ren %SYSDRV%\wine\degray.bmp wallpr.bmp
 if "%$dtc%" == "blue" ren %SYSDRV%\wine\blue.bmp wallpr.bmp
@@ -841,7 +837,7 @@ if "%$dtc%" == "brown" ren %SYSDRV%\wine\brown.bmp wallpr.bmp
 if "%$dtc%" == "+brown" ren %SYSDRV%\wine\yellow.bmp wallpr.bmp
 if "%$dtc%" == "white" ren %SYSDRV%\wine\brgray.bmp wallpr.bmp
 if "%$dtc%" == "+white" ren %SYSDRV%\wine\white.bmp wallpr.bmp
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 goto main
 
 :network
@@ -853,10 +849,10 @@ goto main_m
 [1.进入浏览器]
 
 :network_x
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 call %SYSDRV%\FMDUpro\DILLO\dillo.bat
 ctmouse>nul
-GBKDOS.EXE>nul
+GBKDOS.EXE /03>nul
 goto main
 
 :recycle
@@ -872,7 +868,7 @@ goto recycle_c
 call w.bat list (%$wtc% on %$wnc%) @fmdu.bat:recycle_m
 if "%?%" == "1" del %SYSDRV%\recycle\%gfile%>nul
 if "%?%" == "2" copy /y %SYSDRV%\recycle\%gfile% %SYSDRV%\users\jtadmin\desktop>nul
-if not "%errorlevel%"=="" goto main_m
+if not "%?%"=="" goto main_m
 goto main_m
 
 :recycle_m [x]
@@ -976,14 +972,12 @@ call calc.bat
 goto main_m
 
 :calendar
-date /d>temp.txt
-set /p Y=<temp.txt
-strings Y=right %Y%,10
-strings M=left %Y%,2
-strings Y=right %Y%,4
+strings Y=date 1
+strings M=parse %Y%,1,-
+strings Y=parse %Y%,3,-
 echo :calendar "日历" [x]>temp.txt
 echo [$Y]年 [$M]月 [转到]>>temp.txt
-set /p fc=[←]            [→][退出]<nul>>temp.txt
+command.com /c set /p fc=[←]            [→][退出]<nul>>temp.txt
 cal>>temp.txt
 call w.bat box @temp.txt:calendar
 if exist temp.txt del temp.txt
@@ -997,7 +991,7 @@ goto calendar_main
 :calendar_main
 echo :calendar "日历" [x]>temp.txt
 echo [$Y]年 [$M]月 [转到]>>temp.txt
-set /p fc=[←]            [→][退出]<nul>>temp.txt
+command.com /c set /p fc=[←]            [→][退出]<nul>>temp.txt
 cal %M%/%Y%>>temp.txt
 call w.bat box @temp.txt:calendar
 if exist temp.txt del temp.txt
@@ -1035,8 +1029,8 @@ goto cmd
 
 :cmd
 RANDOM.com 65535>%FMDUDIR%\random.txt
-set /p random=<%FMDUDIR%\random.txt
-set /p code=<chcp.ini
+strings random=read %FMDUDIR%\random.txt,1
+strings code=read chcp.ini,1
 if "%code%"=="437" call w.bat box @fmdu.bat:cmd_en
 if not "%code%"=="437" call w.bat box @fmdu.bat:cm_d
 if "%?%" == "2" goto tablet
@@ -1045,7 +1039,8 @@ echo %folder%>>cmd.ini
 if "%folder%" == "exit" goto exit1
 %folder%
 if "%?%" == "1" goto cmd
-if not "%errorlevel%" == "" goto cmd_io
+if "%?%" == "100" goto cmd_io
+if not "%?%" == "" goto cmd_io
 goto cmd
 
 :cmd_en "Terminal"[x]
@@ -1067,7 +1062,7 @@ wbat list cmd.ini
 goto cmd
 
 :cmd_io
-set /p $dtc=<%SYSDRV%\FMDU\colors\dtcolor\dtcolor.txt
+strings $dtc=read %SYSDRV%\FMDU\colors\dtcolor\dtcolor.txt,1
 set fc=.
 cls
 set random=
@@ -1096,22 +1091,22 @@ goto main_m
 :desc
 call w.bat box 1,1 (%$wtc% on %$wnc%) @fmdu.bat:desc_m
 if errorlevel 254 goto main_m
-if "%errorlevel%" == "1" goto dtc1
-if "%errorlevel%" == "2" goto dtc2
-if "%errorlevel%" == "3" goto dtc3
-if "%errorlevel%" == "4" goto dtc4
-if "%errorlevel%" == "5" goto dtc5
-if "%errorlevel%" == "6" goto dtc6
-if "%errorlevel%" == "7" goto dtc7
-if "%errorlevel%" == "8" goto dtc8
-if "%errorlevel%" == "9" goto dtc9
-if "%errorlevel%" == "10" goto dtc10
-if "%errorlevel%" == "11" goto dtc11
-if "%errorlevel%" == "12" goto dtc12
-if "%errorlevel%" == "13" goto dtc13
-if "%errorlevel%" == "14" goto dtc14
-if "%errorlevel%" == "15" goto dtc15
-if "%errorlevel%" == "16" goto dtc16
+if "%?%" == "1" goto dtc1
+if "%?%" == "2" goto dtc2
+if "%?%" == "3" goto dtc3
+if "%?%" == "4" goto dtc4
+if "%?%" == "5" goto dtc5
+if "%?%" == "6" goto dtc6
+if "%?%" == "7" goto dtc7
+if "%?%" == "8" goto dtc8
+if "%?%" == "9" goto dtc9
+if "%?%" == "10" goto dtc10
+if "%?%" == "11" goto dtc11
+if "%?%" == "12" goto dtc12
+if "%?%" == "13" goto dtc13
+if "%?%" == "14" goto dtc14
+if "%?%" == "15" goto dtc15
+if "%?%" == "16" goto dtc16
 goto main_m
 
 :desc_m "桌面颜色选择" [x]
@@ -1469,22 +1464,22 @@ call w.bat box 1,1 (%$wtc% on %$wnc%) @fmdu.bat:winc_m
 if errorlevel 254 goto main_m
 if "%wrb%" == "1" set fn1=wincor
 if "%wrb%" == "2" set fn1=txtcor
-if "%errorlevel%" == "1" goto wnc1
-if "%errorlevel%" == "2" goto wnc2
-if "%errorlevel%" == "3" goto wnc3
-if "%errorlevel%" == "4" goto wnc4
-if "%errorlevel%" == "5" goto wnc5
-if "%errorlevel%" == "6" goto wnc6
-if "%errorlevel%" == "7" goto wnc7
-if "%errorlevel%" == "8" goto wnc8
-if "%errorlevel%" == "9" goto wnc9
-if "%errorlevel%" == "10" goto wnc10
-if "%errorlevel%" == "11" goto wnc11
-if "%errorlevel%" == "12" goto wnc12
-if "%errorlevel%" == "13" goto wnc13
-if "%errorlevel%" == "14" goto wnc14
-if "%errorlevel%" == "15" goto wnc15
-if "%errorlevel%" == "16" goto wnc16
+if "%?%" == "1" goto wnc1
+if "%?%" == "2" goto wnc2
+if "%?%" == "3" goto wnc3
+if "%?%" == "4" goto wnc4
+if "%?%" == "5" goto wnc5
+if "%?%" == "6" goto wnc6
+if "%?%" == "7" goto wnc7
+if "%?%" == "8" goto wnc8
+if "%?%" == "9" goto wnc9
+if "%?%" == "10" goto wnc10
+if "%?%" == "11" goto wnc11
+if "%?%" == "12" goto wnc12
+if "%?%" == "13" goto wnc13
+if "%?%" == "14" goto wnc14
+if "%?%" == "15" goto wnc15
+if "%?%" == "16" goto wnc16
 goto main_m
 
 :winc_m "窗口/文本颜色选择" [x]
@@ -1574,7 +1569,8 @@ if not exist %FMDUDIR%\metroio\onmetro.ini set yessymbol2=*
 call w.bat box @fmdu.bat:ioscreen_d
 if %?% == 1 goto traditional
 if %?% == 2 del %FMDUDIR%\metroio\onmetro.ini
-if "%errorlevel%" == "0" goto controlpanel
+if "%?%" == "0" goto controlpanel
+if "%?%" == "100" goto controlpanel
 if errorlevel 100 goto controlpanel
 set yessymbol1=
 set yessymbol2=
@@ -1582,7 +1578,8 @@ goto ioscreen
 
 :traditional
 echo metro>%FMDUDIR%\metroio\onmetro.ini
-if "%errorlevel%" == "0" goto controlpanel
+if "%?%" == "100" goto controlpanel
+if "%?%" == "0" goto controlpanel
 if errorlevel 100 goto controlpanel
 set yessymbol1=
 set yessymbol2=
@@ -1595,9 +1592,10 @@ goto ioscreen
 
 :inputsetting
 call w.bat box @fmdu.bat:inputsetting_d
-if "%errorlevel%" == "1" goto defineword
-if "%errorlevel%" == "2" goto automemword
-if "%errorlevel%" == "0" goto controlpanel
+if "%?%" == "1" goto defineword
+if "%?%" == "2" goto automemword
+if "%?%" == "0" goto controlpanel
+if "%?%" == "100" goto controlpanel
 if errorlevel 100 goto controlpanel
 goto inputsetting
 
@@ -1644,11 +1642,11 @@ rem ------------内核板块------------
 
 :mainmenu
 wbat box @FMDU.bat:mainmenu_m
-if "%errorlevel%"=="1" goto kerinf
-if "%errorlevel%"=="2" goto factorymode
-if "%errorlevel%"=="3" goto information
-if "%errorlevel%" == "0" goto controlpanel
-if "%errorlevel%"=="100" goto controlpanel
+if "%?%"=="1" goto kerinf
+if "%?%"=="2" goto factorymode
+if "%?%"=="3" goto information
+if "%?%" == "0" goto controlpanel
+if "%?%"=="100" goto controlpanel
 goto exitkernel
 
 :kerinf
@@ -1665,15 +1663,15 @@ goto mainmenu
 [3.企业信息》]
 
 :factorymode
-wbat box @FMDU.bat:factorymode_m
-if "%errorlevel%"=="1" goto sndtest
-if "%errorlevel%"=="2" goto rgbtest
-if "%errorlevel%"=="3" goto toutest
-if "%errorlevel%"=="4" goto imgtest
-if "%errorlevel%"=="5" goto costest
-if "%errorlevel%"=="6" goto tottest
-if "%errorlevel%" == "0" goto mainmenu
-if "%errorlevel%"=="100" goto mainmenu
+call w.bat box @FMDU.bat:factorymode_m
+if "%?%"=="1" goto sndtest
+if "%?%"=="2" goto rgbtest
+if "%?%"=="3" goto toutest
+if "%?%"=="4" goto imgtest
+if "%?%"=="5" goto costest
+if "%?%"=="6" goto tottest
+if "%?%" == "0" goto mainmenu
+if "%?%"=="100" goto mainmenu
 
 :factorymode_m "工厂模式"[x]
 [1.音响测试》]  
@@ -1685,11 +1683,11 @@ if "%errorlevel%"=="100" goto mainmenu
 
 :sndtest
 beep
-wbat box @FMDU.bat:sndtest_m
-if "%errorlevel%"=="1" goto soundhelp
-if "%errorlevel%"=="2" goto sndtest
-if "%errorlevel%" == "0" goto factorymode
-if "%errorlevel%"=="100" goto factorymode
+call w.bat box @FMDU.bat:sndtest_m
+if "%?%"=="1" goto soundhelp
+if "%?%"=="2" goto sndtest
+if "%?%" == "0" goto factorymode
+if "%?%"=="100" goto factorymode
 goto factorymode
 
 :sndtest_m "音响测试" [x]
@@ -1698,9 +1696,9 @@ goto factorymode
 :
 
 :soundhelp
-wbat box @FMDU.bat:soundhelp_m
-if "%errorlevel%" == "0" goto factorymode
-if "%errorlevel%"=="100" goto factorymode
+call w.bat box @FMDU.bat:soundhelp_m
+if "%?%" == "0" goto factorymode
+if "%?%"=="100" goto factorymode
 goto factorymode
 
 :soundhelp_m "声音异常疑难解答" [x]
@@ -1970,7 +1968,7 @@ goto factorymode
 call w.bat box @fmdu.bat:test_GBK
 if "%?%"=="1" goto factorymode
 if "%?%"=="2" goto factorymode
-if "%errorlevel%" == "0" goto factorymode
+if "%?%" == "0" goto factorymode
 if errorlevel 100 goto factorymode
 goto factorymode
 
@@ -1993,7 +1991,7 @@ goto cfsf
 strings len=length %folder%
 strings len=sub %len%,1
 strings folder=left %folder% , %len%
-set /p inputconfig=<%FMDUDIR%\inputcfg.tmp
+strings inputconfig=read %FMDUDIR%\inputcfg.tmp,1
 if "%inputconfig%"=="cfsf" goto cfsf
 if "%inputconfig%"=="cosf" goto cosf
 if "%inputconfig%"=="cfso" goto cfso
@@ -2006,66 +2004,66 @@ strings len=length %folder%
 strings cur=left ............................... , %len%
 set cur=%cur%^
 call w.bat box @fmdu.bat:cfsf_d
-if "%errorlevel%" == "0" goto exit
-if "%errorlevel%"=="100" goto exit
-if "%errorlevel%"=="43" goto enter_config
+if "%?%" == "0" goto exit
+if "%?%"=="100" goto exit
+if "%?%"=="43" goto enter_config
 rem ---------esc与退格-----------
-if "%errorlevel%"=="1" goto cmd_io
-if "%errorlevel%"=="15" goto backspace
+if "%?%"=="1" goto cmd_io
+if "%?%"=="15" goto backspace
 rem ---------字母及数字-----------
-if "%errorlevel%"=="17" set folder=%folder%q
-if "%errorlevel%"=="18" set folder=%folder%w
-if "%errorlevel%"=="19" set folder=%folder%e
-if "%errorlevel%"=="20" set folder=%folder%r
-if "%errorlevel%"=="21" set folder=%folder%t
-if "%errorlevel%"=="22" set folder=%folder%y
-if "%errorlevel%"=="23" set folder=%folder%u
-if "%errorlevel%"=="24" set folder=%folder%i
-if "%errorlevel%"=="25" set folder=%folder%o
-if "%errorlevel%"=="26" set folder=%folder%p
-if "%errorlevel%"=="32" set folder=%folder%a
-if "%errorlevel%"=="33" set folder=%folder%s
-if "%errorlevel%"=="34" set folder=%folder%d
-if "%errorlevel%"=="35" set folder=%folder%f
-if "%errorlevel%"=="36" set folder=%folder%g
-if "%errorlevel%"=="37" set folder=%folder%h
-if "%errorlevel%"=="38" set folder=%folder%j
-if "%errorlevel%"=="39" set folder=%folder%k
-if "%errorlevel%"=="40" set folder=%folder%l
-if "%errorlevel%"=="45" set folder=%folder%z
-if "%errorlevel%"=="46" set folder=%folder%x
-if "%errorlevel%"=="47" set folder=%folder%c
-if "%errorlevel%"=="48" set folder=%folder%v
-if "%errorlevel%"=="49" set folder=%folder%b
-if "%errorlevel%"=="50" set folder=%folder%n
-if "%errorlevel%"=="51" set folder=%folder%m
-if "%errorlevel%"=="60" set folder=%folder% 
-if "%errorlevel%"=="2" set folder=%folder%`
-if "%errorlevel%"=="3" set folder=%folder%1
-if "%errorlevel%"=="4" set folder=%folder%2
-if "%errorlevel%"=="5" set folder=%folder%3
-if "%errorlevel%"=="6" set folder=%folder%4
-if "%errorlevel%"=="7" set folder=%folder%5
-if "%errorlevel%"=="8" set folder=%folder%6
-if "%errorlevel%"=="9" set folder=%folder%7
-if "%errorlevel%"=="10" set folder=%folder%8
-if "%errorlevel%"=="11" set folder=%folder%9
-if "%errorlevel%"=="12" set folder=%folder%0
+if "%?%"=="17" set folder=%folder%q
+if "%?%"=="18" set folder=%folder%w
+if "%?%"=="19" set folder=%folder%e
+if "%?%"=="20" set folder=%folder%r
+if "%?%"=="21" set folder=%folder%t
+if "%?%"=="22" set folder=%folder%y
+if "%?%"=="23" set folder=%folder%u
+if "%?%"=="24" set folder=%folder%i
+if "%?%"=="25" set folder=%folder%o
+if "%?%"=="26" set folder=%folder%p
+if "%?%"=="32" set folder=%folder%a
+if "%?%"=="33" set folder=%folder%s
+if "%?%"=="34" set folder=%folder%d
+if "%?%"=="35" set folder=%folder%f
+if "%?%"=="36" set folder=%folder%g
+if "%?%"=="37" set folder=%folder%h
+if "%?%"=="38" set folder=%folder%j
+if "%?%"=="39" set folder=%folder%k
+if "%?%"=="40" set folder=%folder%l
+if "%?%"=="45" set folder=%folder%z
+if "%?%"=="46" set folder=%folder%x
+if "%?%"=="47" set folder=%folder%c
+if "%?%"=="48" set folder=%folder%v
+if "%?%"=="49" set folder=%folder%b
+if "%?%"=="50" set folder=%folder%n
+if "%?%"=="51" set folder=%folder%m
+if "%?%"=="60" set folder=%folder% 
+if "%?%"=="2" set folder=%folder%`
+if "%?%"=="3" set folder=%folder%1
+if "%?%"=="4" set folder=%folder%2
+if "%?%"=="5" set folder=%folder%3
+if "%?%"=="6" set folder=%folder%4
+if "%?%"=="7" set folder=%folder%5
+if "%?%"=="8" set folder=%folder%6
+if "%?%"=="9" set folder=%folder%7
+if "%?%"=="10" set folder=%folder%8
+if "%?%"=="11" set folder=%folder%9
+if "%?%"=="12" set folder=%folder%0
 rem --------------符号------------
-if "%errorlevel%"=="13" set folder=%folder%-
-if "%errorlevel%"=="14" set folder=%folder%=
-if "%errorlevel%"=="27" set folder=%folder%[
-if "%errorlevel%"=="28" set folder=%folder%]
-if "%errorlevel%"=="29" set folder=%folder%\
-if "%errorlevel%"=="41" set folder=%folder%;
-if "%errorlevel%"=="42" set folder=%folder%'
-if "%errorlevel%"=="52" set folder=%folder%,
-if "%errorlevel%"=="53" set folder=%folder%.
-if "%errorlevel%"=="54" set folder=%folder%/
+if "%?%"=="13" set folder=%folder%-
+if "%?%"=="14" set folder=%folder%=
+if "%?%"=="27" set folder=%folder%[
+if "%?%"=="28" set folder=%folder%]
+if "%?%"=="29" set folder=%folder%\
+if "%?%"=="41" set folder=%folder%;
+if "%?%"=="42" set folder=%folder%'
+if "%?%"=="52" set folder=%folder%,
+if "%?%"=="53" set folder=%folder%.
+if "%?%"=="54" set folder=%folder%/
 rem ---------ctrl and shift-------
-if "%errorlevel%"=="56" goto cfso
-if "%errorlevel%"=="44" goto cfso
-if "%errorlevel%"=="31" goto cosf
+if "%?%"=="56" goto cfso
+if "%?%"=="44" goto cfso
+if "%?%"=="31" goto cosf
 goto cfsf
 
 :cosf
@@ -2075,66 +2073,66 @@ strings len=length %folder%
 strings cur=left ............................... , %len%
 set cur=%cur%^
 call w.bat box @fmdu.bat:cosf_d
-if "%errorlevel%" == "0" goto exit
-if "%errorlevel%"=="100" goto exit
-if "%errorlevel%"=="43" goto enter_config
+if "%?%" == "0" goto exit
+if "%?%"=="100" goto exit
+if "%?%"=="43" goto enter_config
 rem ---------esc与退格-----------
-if "%errorlevel%"=="1" goto cmd_io
-if "%errorlevel%"=="15" goto backspace
+if "%?%"=="1" goto cmd_io
+if "%?%"=="15" goto backspace
 rem ---------字母及数字-----------
-if "%errorlevel%"=="17" set folder=%folder%Q
-if "%errorlevel%"=="18" set folder=%folder%W
-if "%errorlevel%"=="19" set folder=%folder%E
-if "%errorlevel%"=="20" set folder=%folder%R
-if "%errorlevel%"=="21" set folder=%folder%T
-if "%errorlevel%"=="22" set folder=%folder%Y
-if "%errorlevel%"=="23" set folder=%folder%U
-if "%errorlevel%"=="24" set folder=%folder%I
-if "%errorlevel%"=="25" set folder=%folder%O
-if "%errorlevel%"=="26" set folder=%folder%P
-if "%errorlevel%"=="32" set folder=%folder%A
-if "%errorlevel%"=="33" set folder=%folder%S
-if "%errorlevel%"=="34" set folder=%folder%D
-if "%errorlevel%"=="35" set folder=%folder%F
-if "%errorlevel%"=="36" set folder=%folder%G
-if "%errorlevel%"=="37" set folder=%folder%H
-if "%errorlevel%"=="38" set folder=%folder%J
-if "%errorlevel%"=="39" set folder=%folder%K
-if "%errorlevel%"=="40" set folder=%folder%L
-if "%errorlevel%"=="45" set folder=%folder%Z
-if "%errorlevel%"=="46" set folder=%folder%X
-if "%errorlevel%"=="47" set folder=%folder%C
-if "%errorlevel%"=="48" set folder=%folder%V
-if "%errorlevel%"=="49" set folder=%folder%B
-if "%errorlevel%"=="50" set folder=%folder%N
-if "%errorlevel%"=="51" set folder=%folder%M
-if "%errorlevel%"=="60" set folder=%folder% 
-if "%errorlevel%"=="2" set folder=%folder%`
-if "%errorlevel%"=="3" set folder=%folder%1
-if "%errorlevel%"=="4" set folder=%folder%2
-if "%errorlevel%"=="5" set folder=%folder%3
-if "%errorlevel%"=="6" set folder=%folder%4
-if "%errorlevel%"=="7" set folder=%folder%5
-if "%errorlevel%"=="8" set folder=%folder%6
-if "%errorlevel%"=="9" set folder=%folder%7
-if "%errorlevel%"=="10" set folder=%folder%8
-if "%errorlevel%"=="11" set folder=%folder%9
-if "%errorlevel%"=="12" set folder=%folder%0
+if "%?%"=="17" set folder=%folder%Q
+if "%?%"=="18" set folder=%folder%W
+if "%?%"=="19" set folder=%folder%E
+if "%?%"=="20" set folder=%folder%R
+if "%?%"=="21" set folder=%folder%T
+if "%?%"=="22" set folder=%folder%Y
+if "%?%"=="23" set folder=%folder%U
+if "%?%"=="24" set folder=%folder%I
+if "%?%"=="25" set folder=%folder%O
+if "%?%"=="26" set folder=%folder%P
+if "%?%"=="32" set folder=%folder%A
+if "%?%"=="33" set folder=%folder%S
+if "%?%"=="34" set folder=%folder%D
+if "%?%"=="35" set folder=%folder%F
+if "%?%"=="36" set folder=%folder%G
+if "%?%"=="37" set folder=%folder%H
+if "%?%"=="38" set folder=%folder%J
+if "%?%"=="39" set folder=%folder%K
+if "%?%"=="40" set folder=%folder%L
+if "%?%"=="45" set folder=%folder%Z
+if "%?%"=="46" set folder=%folder%X
+if "%?%"=="47" set folder=%folder%C
+if "%?%"=="48" set folder=%folder%V
+if "%?%"=="49" set folder=%folder%B
+if "%?%"=="50" set folder=%folder%N
+if "%?%"=="51" set folder=%folder%M
+if "%?%"=="60" set folder=%folder% 
+if "%?%"=="2" set folder=%folder%`
+if "%?%"=="3" set folder=%folder%1
+if "%?%"=="4" set folder=%folder%2
+if "%?%"=="5" set folder=%folder%3
+if "%?%"=="6" set folder=%folder%4
+if "%?%"=="7" set folder=%folder%5
+if "%?%"=="8" set folder=%folder%6
+if "%?%"=="9" set folder=%folder%7
+if "%?%"=="10" set folder=%folder%8
+if "%?%"=="11" set folder=%folder%9
+if "%?%"=="12" set folder=%folder%0
 rem --------------符号------------
-if "%errorlevel%"=="13" set folder=%folder%-
-if "%errorlevel%"=="14" set folder=%folder%=
-if "%errorlevel%"=="27" set folder=%folder%[
-if "%errorlevel%"=="28" set folder=%folder%]
-if "%errorlevel%"=="29" set folder=%folder%\
-if "%errorlevel%"=="41" set folder=%folder%;
-if "%errorlevel%"=="42" set folder=%folder%'
-if "%errorlevel%"=="52" set folder=%folder%,
-if "%errorlevel%"=="53" set folder=%folder%.
-if "%errorlevel%"=="54" set folder=%folder%/
+if "%?%"=="13" set folder=%folder%-
+if "%?%"=="14" set folder=%folder%=
+if "%?%"=="27" set folder=%folder%[
+if "%?%"=="28" set folder=%folder%]
+if "%?%"=="29" set folder=%folder%\
+if "%?%"=="41" set folder=%folder%;
+if "%?%"=="42" set folder=%folder%'
+if "%?%"=="52" set folder=%folder%,
+if "%?%"=="53" set folder=%folder%.
+if "%?%"=="54" set folder=%folder%/
 rem ---------ctrl and shift-------
-if "%errorlevel%"=="56" goto coso
-if "%errorlevel%"=="44" goto coso
-if "%errorlevel%"=="31" goto cfsf
+if "%?%"=="56" goto coso
+if "%?%"=="44" goto coso
+if "%?%"=="31" goto cfsf
 goto cosf
 
 :cfso
@@ -2144,66 +2142,66 @@ strings len=length %folder%
 strings cur=left ............................... , %len%
 set cur=%cur%^
 call w.bat box @fmdu.bat:cfso_d
-if "%errorlevel%" == "0" goto exit
-if "%errorlevel%"=="100" goto exit
-if "%errorlevel%"=="43" goto enter_config
+if "%?%" == "0" goto exit
+if "%?%"=="100" goto exit
+if "%?%"=="43" goto enter_config
 rem ---------esc与退格-----------
-if "%errorlevel%"=="1" goto cmd_io
-if "%errorlevel%"=="15" goto backspace
+if "%?%"=="1" goto cmd_io
+if "%?%"=="15" goto backspace
 rem ---------字母及数字-----------
-if "%errorlevel%"=="17" set folder=%folder%q
-if "%errorlevel%"=="18" set folder=%folder%w
-if "%errorlevel%"=="19" set folder=%folder%e
-if "%errorlevel%"=="20" set folder=%folder%r
-if "%errorlevel%"=="21" set folder=%folder%t
-if "%errorlevel%"=="22" set folder=%folder%y
-if "%errorlevel%"=="23" set folder=%folder%u
-if "%errorlevel%"=="24" set folder=%folder%i
-if "%errorlevel%"=="25" set folder=%folder%o
-if "%errorlevel%"=="26" set folder=%folder%p
-if "%errorlevel%"=="32" set folder=%folder%a
-if "%errorlevel%"=="33" set folder=%folder%s
-if "%errorlevel%"=="34" set folder=%folder%d
-if "%errorlevel%"=="35" set folder=%folder%f
-if "%errorlevel%"=="36" set folder=%folder%g
-if "%errorlevel%"=="37" set folder=%folder%h
-if "%errorlevel%"=="38" set folder=%folder%j
-if "%errorlevel%"=="39" set folder=%folder%k
-if "%errorlevel%"=="40" set folder=%folder%l
-if "%errorlevel%"=="45" set folder=%folder%z
-if "%errorlevel%"=="46" set folder=%folder%x
-if "%errorlevel%"=="47" set folder=%folder%c
-if "%errorlevel%"=="48" set folder=%folder%v
-if "%errorlevel%"=="49" set folder=%folder%b
-if "%errorlevel%"=="50" set folder=%folder%n
-if "%errorlevel%"=="51" set folder=%folder%m
-if "%errorlevel%"=="60" set folder=%folder% 
-if "%errorlevel%"=="2" set folder=%folder%~
-if "%errorlevel%"=="3" set folder=%folder%!
-if "%errorlevel%"=="4" set folder=%folder%@
-if "%errorlevel%"=="5" set folder=%folder%#
-if "%errorlevel%"=="6" set folder=%folder%$
-if "%errorlevel%"=="7" set folder=%folder%%
-if "%errorlevel%"=="8" set folder=%folder%^
-if "%errorlevel%"=="9" set folder=%folder%&
-if "%errorlevel%"=="10" set folder=%folder%*
-if "%errorlevel%"=="11" set folder=%folder%(
-if "%errorlevel%"=="12" set folder=%folder%)
+if "%?%"=="17" set folder=%folder%q
+if "%?%"=="18" set folder=%folder%w
+if "%?%"=="19" set folder=%folder%e
+if "%?%"=="20" set folder=%folder%r
+if "%?%"=="21" set folder=%folder%t
+if "%?%"=="22" set folder=%folder%y
+if "%?%"=="23" set folder=%folder%u
+if "%?%"=="24" set folder=%folder%i
+if "%?%"=="25" set folder=%folder%o
+if "%?%"=="26" set folder=%folder%p
+if "%?%"=="32" set folder=%folder%a
+if "%?%"=="33" set folder=%folder%s
+if "%?%"=="34" set folder=%folder%d
+if "%?%"=="35" set folder=%folder%f
+if "%?%"=="36" set folder=%folder%g
+if "%?%"=="37" set folder=%folder%h
+if "%?%"=="38" set folder=%folder%j
+if "%?%"=="39" set folder=%folder%k
+if "%?%"=="40" set folder=%folder%l
+if "%?%"=="45" set folder=%folder%z
+if "%?%"=="46" set folder=%folder%x
+if "%?%"=="47" set folder=%folder%c
+if "%?%"=="48" set folder=%folder%v
+if "%?%"=="49" set folder=%folder%b
+if "%?%"=="50" set folder=%folder%n
+if "%?%"=="51" set folder=%folder%m
+if "%?%"=="60" set folder=%folder% 
+if "%?%"=="2" set folder=%folder%~
+if "%?%"=="3" set folder=%folder%!
+if "%?%"=="4" set folder=%folder%@
+if "%?%"=="5" set folder=%folder%#
+if "%?%"=="6" set folder=%folder%$
+if "%?%"=="7" set folder=%folder%%
+if "%?%"=="8" set folder=%folder%^
+if "%?%"=="9" set folder=%folder%&
+if "%?%"=="10" set folder=%folder%*
+if "%?%"=="11" set folder=%folder%(
+if "%?%"=="12" set folder=%folder%)
 rem --------------符号------------
-if "%errorlevel%"=="13" set folder=%folder%_
-if "%errorlevel%"=="14" set folder=%folder%+
-if "%errorlevel%"=="27" set folder=%folder%{
-if "%errorlevel%"=="28" set folder=%folder%}
-if "%errorlevel%"=="29" set folder=%folder%│
-if "%errorlevel%"=="41" set folder=%folder%:
-if "%errorlevel%"=="42" set folder=%folder%"
-if "%errorlevel%"=="52" set folder=%folder%〈
-if "%errorlevel%"=="53" set folder=%folder%〉
-if "%errorlevel%"=="54" set folder=%folder%?
+if "%?%"=="13" set folder=%folder%_
+if "%?%"=="14" set folder=%folder%+
+if "%?%"=="27" set folder=%folder%{
+if "%?%"=="28" set folder=%folder%}
+if "%?%"=="29" set folder=%folder%│
+if "%?%"=="41" set folder=%folder%:
+if "%?%"=="42" set folder=%folder%"
+if "%?%"=="52" set folder=%folder%〈
+if "%?%"=="53" set folder=%folder%〉
+if "%?%"=="54" set folder=%folder%?
 rem ---------ctrl and shift-------
-if "%errorlevel%"=="56" goto cfsf
-if "%errorlevel%"=="44" goto cfsf
-if "%errorlevel%"=="31" goto coso
+if "%?%"=="56" goto cfsf
+if "%?%"=="44" goto cfsf
+if "%?%"=="31" goto coso
 goto cfsf
 
 :coso
@@ -2213,66 +2211,66 @@ strings len=length %folder%
 strings cur=left ............................... , %len%
 set cur=%cur%^
 call w.bat box @fmdu.bat:coso_d
-if "%errorlevel%" == "0" goto exit
-if "%errorlevel%"=="100" goto exit
-if "%errorlevel%"=="43" goto enter_config
+if "%?%" == "0" goto exit
+if "%?%"=="100" goto exit
+if "%?%"=="43" goto enter_config
 rem ---------esc与退格-----------
-if "%errorlevel%"=="1" goto cmd_io
-if "%errorlevel%"=="15" goto backspace
+if "%?%"=="1" goto cmd_io
+if "%?%"=="15" goto backspace
 rem ---------字母及数字-----------
-if "%errorlevel%"=="17" set folder=%folder%Q
-if "%errorlevel%"=="18" set folder=%folder%W
-if "%errorlevel%"=="19" set folder=%folder%E
-if "%errorlevel%"=="20" set folder=%folder%R
-if "%errorlevel%"=="21" set folder=%folder%T
-if "%errorlevel%"=="22" set folder=%folder%Y
-if "%errorlevel%"=="23" set folder=%folder%U
-if "%errorlevel%"=="24" set folder=%folder%I
-if "%errorlevel%"=="25" set folder=%folder%O
-if "%errorlevel%"=="26" set folder=%folder%P
-if "%errorlevel%"=="32" set folder=%folder%A
-if "%errorlevel%"=="33" set folder=%folder%S
-if "%errorlevel%"=="34" set folder=%folder%D
-if "%errorlevel%"=="35" set folder=%folder%F
-if "%errorlevel%"=="36" set folder=%folder%G
-if "%errorlevel%"=="37" set folder=%folder%H
-if "%errorlevel%"=="38" set folder=%folder%J
-if "%errorlevel%"=="39" set folder=%folder%K
-if "%errorlevel%"=="40" set folder=%folder%L
-if "%errorlevel%"=="45" set folder=%folder%Z
-if "%errorlevel%"=="46" set folder=%folder%X
-if "%errorlevel%"=="47" set folder=%folder%C
-if "%errorlevel%"=="48" set folder=%folder%V
-if "%errorlevel%"=="49" set folder=%folder%B
-if "%errorlevel%"=="50" set folder=%folder%N
-if "%errorlevel%"=="51" set folder=%folder%M
-if "%errorlevel%"=="60" set folder=%folder% 
-if "%errorlevel%"=="2" set folder=%folder%~
-if "%errorlevel%"=="3" set folder=%folder%!
-if "%errorlevel%"=="4" set folder=%folder%@
-if "%errorlevel%"=="5" set folder=%folder%#
-if "%errorlevel%"=="6" set folder=%folder%$
-if "%errorlevel%"=="7" set folder=%folder%%
-if "%errorlevel%"=="8" set folder=%folder%^
-if "%errorlevel%"=="9" set folder=%folder%&
-if "%errorlevel%"=="10" set folder=%folder%*
-if "%errorlevel%"=="11" set folder=%folder%(
-if "%errorlevel%"=="12" set folder=%folder%)
+if "%?%"=="17" set folder=%folder%Q
+if "%?%"=="18" set folder=%folder%W
+if "%?%"=="19" set folder=%folder%E
+if "%?%"=="20" set folder=%folder%R
+if "%?%"=="21" set folder=%folder%T
+if "%?%"=="22" set folder=%folder%Y
+if "%?%"=="23" set folder=%folder%U
+if "%?%"=="24" set folder=%folder%I
+if "%?%"=="25" set folder=%folder%O
+if "%?%"=="26" set folder=%folder%P
+if "%?%"=="32" set folder=%folder%A
+if "%?%"=="33" set folder=%folder%S
+if "%?%"=="34" set folder=%folder%D
+if "%?%"=="35" set folder=%folder%F
+if "%?%"=="36" set folder=%folder%G
+if "%?%"=="37" set folder=%folder%H
+if "%?%"=="38" set folder=%folder%J
+if "%?%"=="39" set folder=%folder%K
+if "%?%"=="40" set folder=%folder%L
+if "%?%"=="45" set folder=%folder%Z
+if "%?%"=="46" set folder=%folder%X
+if "%?%"=="47" set folder=%folder%C
+if "%?%"=="48" set folder=%folder%V
+if "%?%"=="49" set folder=%folder%B
+if "%?%"=="50" set folder=%folder%N
+if "%?%"=="51" set folder=%folder%M
+if "%?%"=="60" set folder=%folder% 
+if "%?%"=="2" set folder=%folder%~
+if "%?%"=="3" set folder=%folder%!
+if "%?%"=="4" set folder=%folder%@
+if "%?%"=="5" set folder=%folder%#
+if "%?%"=="6" set folder=%folder%$
+if "%?%"=="7" set folder=%folder%%
+if "%?%"=="8" set folder=%folder%^
+if "%?%"=="9" set folder=%folder%&
+if "%?%"=="10" set folder=%folder%*
+if "%?%"=="11" set folder=%folder%(
+if "%?%"=="12" set folder=%folder%)
 rem --------------符号------------
-if "%errorlevel%"=="13" set folder=%folder%_
-if "%errorlevel%"=="14" set folder=%folder%+
-if "%errorlevel%"=="27" set folder=%folder%{
-if "%errorlevel%"=="28" set folder=%folder%}
-if "%errorlevel%"=="29" set folder=%folder%│
-if "%errorlevel%"=="41" set folder=%folder%:
-if "%errorlevel%"=="42" set folder=%folder%"
-if "%errorlevel%"=="52" set folder=%folder%〈
-if "%errorlevel%"=="53" set folder=%folder%〉
-if "%errorlevel%"=="54" set folder=%folder%?
+if "%?%"=="13" set folder=%folder%_
+if "%?%"=="14" set folder=%folder%+
+if "%?%"=="27" set folder=%folder%{
+if "%?%"=="28" set folder=%folder%}
+if "%?%"=="29" set folder=%folder%│
+if "%?%"=="41" set folder=%folder%:
+if "%?%"=="42" set folder=%folder%"
+if "%?%"=="52" set folder=%folder%〈
+if "%?%"=="53" set folder=%folder%〉
+if "%?%"=="54" set folder=%folder%?
 rem ---------ctrl and shift-------
-if "%errorlevel%"=="56" goto cosf
-if "%errorlevel%"=="44" goto cosf
-if "%errorlevel%"=="31" goto cfso
+if "%?%"=="56" goto cosf
+if "%?%"=="44" goto cosf
+if "%?%"=="31" goto cfso
 goto cosf
 
 :cfsf_d "软键盘" [x]

@@ -1,12 +1,18 @@
 @echo off
+set wshadow=none
+if "%1"=="/?" goto _help
+if not exist %FMDUDIR%\w.bat goto _err
+if not exist %FMDUDIR%\wbat.com goto _err
+if not exist %FMDUDIR%\calcmd.com goto _err
+if not exist %FMDUDIR%\strings.com goto _err
 wbat save
 copy %temp%\wscreen.0 %FMDUDIR%>nul
-set wshadow=none
 rem -----------小数点位数------------
 set digital=10
 rem ---------------------------------
-if "%1"=="/?" goto _help
 echo=>%temp%\temp.txt
+if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe hxldr32.exe -q>nul
+if not exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe wbat box "32位支持缺失，将不能计算阶乘、反阶乘与W函数值。" 确定
 
 :_start
 call w.bat FIX box 2,23 @calc.bat:_calc
@@ -93,6 +99,8 @@ if "%?%"=="22" if not "%smath%"=="" set smath=%smath%/
 if "%?%"=="22" if "%smath%"=="" set smath=/
 if "%?%"=="22" if not "%smath%"=="" set smath_display=%smath_display%/
 if "%?%"=="22" if "%smath%"=="" set smath_display=/
+if "%?%"=="23" if not "%smath%"=="" set smath=%smath%*0.01
+if "%?%"=="23" if not "%smath%"=="" set smath_display=%smath_display%％
 goto _start
 
 :_start-sci
@@ -187,14 +195,11 @@ if "%?%"=="30" if not "%smath%"=="" set smath=%smath%sign(
 if "%?%"=="30" if "%smath%"=="" set smath=sign(
 if "%?%"=="30" if not "%smath%"=="" set smath_display=%smath_display%sgn(
 if "%?%"=="30" if "%smath%"=="" set smath_display=sgn(
-if "%?%"=="31" set num=
-if "%?%"=="32" set num=1
+if "%?%"=="31" if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe goto fac-create
+if "%?%"=="32" if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe goto w-create
 
 if "%?%"=="33" goto n0
-if "%?%"=="34" if not "%smath%"=="" set smath=%smath%e
-if "%?%"=="34" if "%smath%"=="" set smath=e
-if "%?%"=="34" if not "%smath%"=="" set smath_display=%smath_display%e
-if "%?%"=="34" if "%smath%"=="" set smath_display=e
+if "%?%"=="34" goto baseuler
 if "%?%"=="35" goto baspoint
 if "%?%"=="36" if not "%smath%"=="" set smath=%smath%/
 if "%?%"=="36" if "%smath%"=="" set smath=/
@@ -208,27 +213,34 @@ if "%?%"=="38" if not "%smath%"=="" set smath=%smath%rnd(
 if "%?%"=="38" if "%smath%"=="" set smath=rnd(
 if "%?%"=="38" if not "%smath%"=="" set smath_display=%smath_display%rnd(
 if "%?%"=="38" if "%smath%"=="" set smath_display=rnd(
-if "%?%"=="40" if not "%smath%"=="" set smath=%smath%mem
-if "%?%"=="40" if "%smath%"=="" set smath=mem
-if "%?%"=="40" if not "%smath%"=="" set smath_display=%smath_display%ans
-if "%?%"=="40" if "%smath%"=="" set smath_display=ans
+if "%?%"=="39" goto basans
+if "%?%"=="40" set num=
+if "%?%"=="41" set num=1
+if "%?%"=="42" if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe goto afac-create
 
-if "%?%"=="42" if not "%smath%"=="" set smath=%smath%*pi/180
-if "%?%"=="42" if "%smath%"=="" set smath=pi/180
-if "%?%"=="42" if not "%smath%"=="" set smath_display=%smath_display%°
-if "%?%"=="42" if "%smath%"=="" set smath_display=°
-if "%?%"=="43" if not "%smath%"=="" set smath=%smath%*pi/10800
-if "%?%"=="43" if "%smath%"=="" set smath=pi/10800
-if "%?%"=="43" if not "%smath%"=="" set smath_display=%smath_display%′
-if "%?%"=="43" if "%smath%"=="" set smath_display=′
-if "%?%"=="44" if not "%smath%"=="" set smath=%smath%*pi/648000
-if "%?%"=="44" if "%smath%"=="" set smath=pi/648000
-if "%?%"=="44" if not "%smath%"=="" set smath_display=%smath_display%″
-if "%?%"=="44" if "%smath%"=="" set smath_display=″
-if "%?%"=="45" goto dfmconfig
-if "%?%"=="46" goto angle
+if "%?%"=="43" if not "%smath%"=="" set smath=%smath%0.5772156649015328606
+if "%?%"=="43" if "%smath%"=="" set smath=0.5772156649015328606
+if "%?%"=="43" if not "%smath%"=="" set smath_display=%smath_display%γ
+if "%?%"=="43" if "%smath%"=="" set smath_display=γ
+if "%?%"=="44" if not "%smath%"=="" set smath=%smath%*0.01
+if "%?%"=="44" if not "%smath%"=="" set smath_display=%smath_display%％
+if "%?%"=="45" if not "%smath%"=="" set smath=%smath%*pi/180
+if "%?%"=="45" if "%smath%"=="" set smath=pi/180
+if "%?%"=="45" if not "%smath%"=="" set smath_display=%smath_display%°
+if "%?%"=="45" if "%smath%"=="" set smath_display=°
+if "%?%"=="46" if not "%smath%"=="" set smath=%smath%*pi/10800
+if "%?%"=="46" if "%smath%"=="" set smath=pi/10800
+if "%?%"=="46" if not "%smath%"=="" set smath_display=%smath_display%′
+if "%?%"=="46" if "%smath%"=="" set smath_display=′
+if "%?%"=="47" if not "%smath%"=="" set smath=%smath%*pi/648000
+if "%?%"=="47" if "%smath%"=="" set smath=pi/648000
+if "%?%"=="47" if not "%smath%"=="" set smath_display=%smath_display%″
+if "%?%"=="47" if "%smath%"=="" set smath_display=″
+if "%?%"=="48" goto dfmconfig
+if "%?%"=="49" goto angle
 goto _start-sci
 
+rem -------对数、阶乘、反阶乘与W函数值-------
 :log-create
 set num=
 if not "%bas%"=="" if not "%smath%"=="" set smath=%smath%1/lg(%bas%)*lg(
@@ -238,6 +250,118 @@ if "%bas%"=="" if "%smath%"=="" set smath=log(
 if not "%smath%"=="" set smath_display=%smath_display%log%bas%(
 if "%smath%"=="" set smath_display=log%bas%(
 goto _start-sci
+
+:fac-create
+if not exist %SYSDRV%\FMDU\SYSX86\x!.exe goto _start-sci
+set num=
+if not "%bas%"=="" if not "%smath%"=="" set smath_display=%smath_display%%bas%!
+if not "%bas%"=="" if "%smath%"=="" set smath_display=%bas%!
+if "%bas%"=="" if not "%smath%"=="" set smath_display=%smath_display%0!
+if "%bas%"=="" if "%smath%"=="" set smath_display=0!
+if not "%bas%"=="" goto faccal
+if "%bas%"=="" if not "%smath%"=="" set smath=%smath%1
+if "%bas%"=="" if "%smath%"=="" set smath=1
+goto _start-sci
+
+:faccal
+calcmd %bas%>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+echo.>>%temp%\temp.txt
+calcmd rnd(abs(mem-int(mem))*10^15)>>%temp%\temp.txt
+echo.>>%temp%\temp.txt
+calcmd int(abs(%speci%))>>%temp%\temp.txt
+strings dfm=left %speci%,1 
+strings speci=read %temp%\temp.txt,3
+strings len=length %speci%
+strings speci=right %speci%,%len%
+if "%dfm%"=="-" set speci=%dfm%%speci%
+strings dfm=read %temp%\temp.txt,2
+strings len=length %dfm%
+strings len=sub 15,%len%
+strings len=repeat %len%,0
+strings dfm=right %dfm%,15
+if not "%dfm%"=="0" set speci=%speci%.%len%%dfm%
+set len=
+x! %speci%>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+if not "%bas%"=="" if not "%smath%"=="" set smath=%smath%%speci%
+if not "%bas%"=="" if "%smath%"=="" set smath=%speci%
+goto _start-sci
+
+:w-create
+if not exist %SYSDRV%\FMDU\SYSX86\w.exe goto _start-sci
+set num=
+if not "%bas%"=="" if not "%smath%"=="" set smath_display=%smath_display%W(%bas%)
+if not "%bas%"=="" if "%smath%"=="" set smath_display=W(%bas%)
+if "%bas%"=="" if not "%smath%"=="" set smath_display=%smath_display%W(0)
+if "%bas%"=="" if "%smath%"=="" set smath_display=W(0)
+if not "%bas%"=="" goto wcal
+if "%bas%"=="" if not "%smath%"=="" set smath=%smath%0
+if "%bas%"=="" if "%smath%"=="" set smath=0
+goto _start-sci
+
+:wcal
+calcmd %bas%>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+echo.>>%temp%\temp.txt
+calcmd rnd(abs(mem-int(mem))*10^15)>>%temp%\temp.txt
+echo.>>%temp%\temp.txt
+calcmd int(abs(%speci%))>>%temp%\temp.txt
+strings dfm=left %speci%,1 
+strings speci=read %temp%\temp.txt,3
+strings len=length %speci%
+strings speci=right %speci%,%len%
+if "%dfm%"=="-" set speci=%dfm%%speci%
+strings dfm=read %temp%\temp.txt,2
+strings len=length %dfm%
+strings len=sub 15,%len%
+strings len=repeat %len%,0
+strings dfm=right %dfm%,15
+if not "%dfm%"=="0" set speci=%speci%.%len%%dfm%
+set len=
+w.exe %speci%>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+if not "%bas%"=="" if not "%smath%"=="" set smath=%smath%%speci%
+if not "%bas%"=="" if "%smath%"=="" set smath=%speci%
+goto _start-sci
+
+:afac-create
+if not exist %SYSDRV%\FMDU\SYSX86\afacx.exe goto _start-sci
+set num=
+if not "%bas%"=="" if not "%smath%"=="" set smath_display=%smath_display%afac(%bas%)
+if not "%bas%"=="" if "%smath%"=="" set smath_display=afac(%bas%)
+if "%bas%"=="" if not "%smath%"=="" set smath_display=%smath_display%afac(min)
+if "%bas%"=="" if "%smath%"=="" set smath_display=afac(min)
+if not "%bas%"=="" goto afaccal
+if "%bas%"=="" if not "%smath%"=="" set smath=%smath%0.461632144968
+if "%bas%"=="" if "%smath%"=="" set smath=0.461632144968
+
+:afaccal
+calcmd %bas%>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+echo.>>%temp%\temp.txt
+calcmd rnd(abs(mem-int(mem))*10^15)>>%temp%\temp.txt
+echo.>>%temp%\temp.txt
+calcmd int(abs(%speci%))>>%temp%\temp.txt
+strings dfm=left %speci%,1 
+strings speci=read %temp%\temp.txt,3
+strings len=length %speci%
+strings speci=right %speci%,%len%
+set len=
+if "%dfm%"=="-" set speci=%dfm%%speci%
+strings dfm=read %temp%\temp.txt,2
+strings len=length %dfm%
+strings len=sub 15,%len%
+strings len=repeat %len%,0
+strings dfm=right %dfm%,15
+if not "%dfm%"=="0" set speci=%speci%.%len%%dfm%
+set len=
+afacx %speci%>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+if not "%bas%"=="" if not "%smath%"=="" set smath=%smath%%speci%
+if not "%bas%"=="" if "%smath%"=="" set smath=%speci%
+goto _start-sci
+rem -----------------------------------------
 
 rem -----数字判断-----
 :n1
@@ -401,7 +525,7 @@ if "%smath%"=="" set smath_display=0
 goto _start-sci
 rem ------------------
 
-rem ------------对数之底-------------
+rem ------------对数之底，包括x的阶乘、反阶乘函数值与W函数值-------------
 :bas0
 if not "%bas%"=="" set bas=%bas%0
 if "%bas%"=="" set bas=0
@@ -466,6 +590,24 @@ if "%num%"=="" if "%smath%"=="" set smath_display=π
 if "%num%"=="1" if not "%bas%"=="" set bas=%bas%*pi
 if "%num%"=="1" if "%bas%"=="" set bas=pi
 goto _start-sci
+
+:baseuler
+if "%num%"=="" if not "%smath%"=="" set smath=%smath%e
+if "%num%"=="" if "%smath%"=="" set smath=e
+if "%num%"=="" if not "%smath%"=="" set smath_display=%smath_display%e
+if "%num%"=="" if "%smath%"=="" set smath_display=e
+if "%num%"=="1" if not "%bas%"=="" set bas=%bas%*e
+if "%num%"=="1" if "%bas%"=="" set bas=e
+goto _start-sci
+
+:basans
+if "%num%"=="" if not "%smath%"=="" set smath=%smath%mem
+if "%num%"=="" if "%smath%"=="" set smath=mem
+if "%num%"=="" if not "%smath%"=="" set smath_display=%smath_display%ans
+if "%num%"=="" if "%smath%"=="" set smath_display=ans
+if "%num%"=="1" if not "%bas%"=="" set bas=%bas%mem
+if "%num%"=="1" if "%bas%"=="" set bas=mem
+goto _start-sci
 rem ---------------------------------
 
 :dfmconfig
@@ -503,37 +645,37 @@ goto _start-sci
 
 :_calc "计算器" [x]
 [选项][关于]
-------------------------
-[$smath_display,100    ]
-例如 2X5+√(7)-3/894.21
+---------------------------
+[$smath_display,100       ]
+例如 2X5+√(7)-3/894.21+6％
 计算结果~%result%~
-------------------------
-[1] [2] [3] [+] [R 归零]
+---------------------------
+[１] [２] [３] [+] [R 归零]
 
-[4] [5] [6] [-] [(] [√]
+[４] [５] [６] [-] [(] [√]
 
-[7] [8] [9] [X] [)] [M+]
+[７] [８] [９] [X] [)] [M+]
 
-[0] [．] [÷] [J 计算]
-------------------------
+[０] [．] [÷] [%] [J 计算]
+---------------------------
 ::
 
 :_calc-sci "计算器" [x]
 [选项][关于]
 ------------------------------------------------------
 [$smath_display,100                                  ]
-例如 log5(2)+4X2^10-5/4+eXcos(π/6)
-计算结果~%result%~
+例如 log5(2)+4X2^10-5/4+eXcos(π/6)-7!
+计算结果 ~%result%~
 ------------------------------------------------------
 [1] [2] [3] [+] [^] [int] [lg] [arcsin] [√] [log (x)]
                                                  ↑
-[4] [5] [6] [-] [(] [sin] [ln] [arccos] [||] [$bas,10] 
-
-[7] [8] [9] [X] [)] [cos] [π] [arctan] [sgn] [↑][↓]
-
-[0] [e] [．] [÷] [tan] [round] [R 归零] [M+] [J 计算]
+[4] [5] [6] [-] [(] [sin] [ln] [arccos] [||] [$bas,20] 
+                                                 ↓
+[7] [8] [9] [X] [)] [cos] [π] [arctan] [sgn] [x!]-[W]
+                                                 ↓
+[0] [e] [．] [÷] [tan] [round] [M+] [↑][↓] [invfac]
 ------------------------------------------------------
-[°] ['] ["] [°'"] [角度]
+[γ] [%] [°] ['] ["] [°'"] [角度]-%num%-[R 归零] [J 计算]
 ::
 
 :_calc-opinion " "
@@ -556,9 +698,18 @@ if "%opi%"=="1" goto _start-sci
 :_js
 strings cfg=findc %smath%,mem
 if "%smath%"=="" goto _start-sci
-calcmd %smath%*(1+10^-15)>%temp%\temp.txt
+calcmd %smath%*10^%digital%>%temp%\temp.txt
+echo.>>%temp%\temp.txt
+calcmd rnd(%smath%)*10^%digital%>>%temp%\temp.txt
+strings speci=read %temp%\temp.txt,1
+strings dfm=read %temp%\temp.txt,2
+strings len=length %speci%
+strings speci=right %speci%,%len%
+strings len=length %dfm%
+strings dfm=right %dfm%,%len%
+calcmd %smath%>%temp%\temp.txt
 strings result=read %temp%\temp.txt,1
-if not "%digital%"=="" goto _jsw
+if not "%digital%"=="" if not "%speci%"=="%dfm%" goto _jsw
 set dfm=
 if "%opi%"=="" goto _start
 if "%opi%"=="1" goto _start-sci
@@ -570,11 +721,17 @@ echo.>>%temp%\temp.txt
 calcmd int(abs(%result%))>>%temp%\temp.txt
 strings dfm=left %result%,1 
 strings result=read %temp%\temp.txt,3
-strings result=left %result%,%digital%
+strings len=length %result%
+strings result=right %result%,%len%
 if "%dfm%"=="-" set result=%dfm%%result%
 strings dfm=read %temp%\temp.txt,2
-strings dfm=left %dfm%,%digital%
-set result=%result%.%dfm%
+strings len=length %dfm%
+strings len=sub %digital%,%len%
+strings len=repeat %len%,0
+strings dfm=right %dfm%,%digital%
+if not "%dfm%"=="0" set result=%result%.%len%%dfm%
+set len=
+if "%result%"=="-0" set result=0
 if not "%cfg%"=="0" calcmd %result%>nul
 if "%cfg%"=="0" calcmd %smath%>nul
 set cfg=
@@ -596,13 +753,19 @@ if not "%cfg%"=="0" strings smath=read %temp%\temp.txt,1
 calcmd %smath%>nul
 calcmd mem*180/pi>%temp%\temp.txt
 strings result=read %temp%\temp.txt,1
+strings len=length %result%
+strings result=right %result%,%len%
+set len=
+if "%result%"=="-0" set result=0
 set result=%result%°
 set dfm=
 set num=
 goto _start-sci
 
 :_about "关于计算器" [x]
-计算器 何世恒制作
+计算器1.0 何世恒制作
+由于浮点数误差原因，本计算器在计算sin、cos、tan的有理数倍
+pi值时可能会产生随机误差，还望谅解。
 [确定]
 :
 
@@ -620,28 +783,30 @@ if "%opi%"=="1" goto _start-sci
 goto _start
 
 :_help
-if exist wbat.com wbat box @calc.bat:_about
+if exist %FMDUDIR%\wbat.com wbat box @calc.bat:_about
 if "%errorlevel%"=="0" if exist %temp%\temp.txt if "%opi%"=="" goto _start
 if "%errorlevel%"=="0" if exist %temp%\temp.txt if "%opi%"=="1" goto _start-sci
 if "%errorlevel%"=="0" if not exist %temp%\temp.txt goto _out
 if errorlevel 100 if exist %temp%\temp.txt if "%opi%"=="" goto _start
 if errorlevel 100 if exist %temp%\temp.txt if "%opi%"=="1" goto _start-sci
 if errorlevel 100 if not exist %temp%\temp.txt goto _out
-if not exist wbat.com echo 计算器 何世恒制作
+if not exist %FMDUDIR%\wbat.com echo 计算器1.0 何世恒制作
+if not exist %FMDUDIR%\wbat.com echo 由于浮点数误差原因，本计算器在计算sin、cos、tan的有理数倍
+if not exist %FMDUDIR%\wbat.com echo pi值时可能会产生随机误差，还望谅解。
 if exist %temp%\temp.txt if "%opi%"=="" goto _start
 if exist %temp%\temp.txt if "%opi%"=="1" goto _start-sci
 goto _out
 
+:_err
+if not exist %FMDUDIR%\w.bat echo 缺少WBAT图形化环境！
+if not exist %FMDUDIR%\wbat.com echo 缺少WBAT图形化环境！
+if not exist %FMDUDIR%\calcmd.com echo 缺少计算内核！
+if not exist %FMDUDIR%\strings.com echo 缺少关键程序！
+goto _out
+
 :_out
+rem if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe hxldr32.exe -u>nul
 set ?=
-set result=
-set smath=
-set smath_display=
-set dfm=
-set num=
-set bas=
-set opi=
-set minus=
-for %%a in (result smath wbat wboxhi wboxtitle WSourceFile) do set %%a=
+for %%a in (result smath smath_display dfm num bas opi minus wbat wboxhi wboxtitle WSourceFile wshadow digital speci) do set %%a=
 if exist %temp%\temp.txt del %temp%\temp.txt>NUL
-wbat restore
+if exist %FMDUDIR%\wbat.com wbat restore
