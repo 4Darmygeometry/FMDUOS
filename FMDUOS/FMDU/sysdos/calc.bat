@@ -805,7 +805,7 @@ if not exist %FMDUDIR%\strings.com echo È±ÉÙ¹Ø¼ü³ÌÐò£¡
 goto _out
 
 :_out
-rem if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe hxldr32.exe -u>nul
+if exist %SYSDRV%\FMDU\SYSX86\hxldr32.exe hxldr32.exe -u>nul
 set ?=
 for %%a in (result smath smath_display dfm num bas opi minus wbat wboxhi wboxtitle WSourceFile wshadow digital speci) do set %%a=
 if exist %temp%\temp.txt del %temp%\temp.txt>NUL

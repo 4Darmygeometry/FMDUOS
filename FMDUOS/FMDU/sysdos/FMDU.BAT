@@ -955,7 +955,7 @@ if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
 if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
 echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
 cls
-call edit.exe %fk0%\mtemp.tmp>nul
+call edit.com %fk0%\mtemp.tmp>nul
 HXLDR32.EXE -q>nul
 iconv -c -f gbk -t UTF-8 %fk0%\mtemp.tmp>%fk0%\%gfile%
 HXLDR32.EXE -u>nul
@@ -969,7 +969,7 @@ if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
 if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
 echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
 cls
-call edit.exe %fk0%\%gfile%>nul
+call edit.com %fk0%\%gfile%>nul
 goto notepad_EXIT
 
 :notepad_EXIT
@@ -993,7 +993,7 @@ if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
 if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
 echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
 cls
-call edit.exe>nul
+call notepad.exe>nul
 rem %SYSDRV%\FMDU\GBKIN\GBKIN.EXE /u>nul
 goto main_m
 

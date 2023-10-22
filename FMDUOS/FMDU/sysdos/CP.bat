@@ -23,7 +23,7 @@ if not "%code%"=="437" echo 当前图形模式代码页 %code%
 :ASCII
 strings code=read chcp.ini,1
 if "%code%"=="437" goto exitcp
-if "%code%"=="936" GBKDOS /00>nul
+if "%code%"=="936" GBKDOS
 if "%code%"=="20936" TW /q>nul
 echo 437>chcp.ini
 goto exitcp
@@ -32,17 +32,19 @@ goto exitcp
 strings code=read chcp.ini,1
 if "%code%"=="936" goto exitcp
 if "%code%"=="20936" TW /q>nul
-GBKDOS /00>nul
+if "%code%"=="437" GBKDOS
+if "%code%"=="20936" GBKDOS
 echo 936>chcp.ini
-cls
 goto exitcp
 
 :GB2312
 strings code=read chcp.ini,1
 if "%code%"=="20936" goto exitcp
-if "%code%"=="936" GBKDOS /00>nul
-TW /np>nul
-KEY PY LX>nul
+if "%code%"=="936" GBKDOS
+if "%code%"=="437" TW /np>nul
+if "%code%"=="437" KEY PY LX>nul
+if "%code%"=="936" TW /np>nul
+if "%code%"=="936" KEY PY LX>nul
 echo 20936>chcp.ini
 goto exitcp
 
