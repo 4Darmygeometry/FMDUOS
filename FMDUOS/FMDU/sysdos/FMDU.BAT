@@ -993,6 +993,9 @@ if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
 if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
 echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
 cls
+wbat fill (%$wtc% on %$dtc%)
+copy %FMDUDIR%\WSCREEN.0 %TEMP%\>nul
+wbat restore
 call notepad.exe>nul
 rem %SYSDRV%\FMDU\GBKIN\GBKIN.EXE /u>nul
 goto main_m
