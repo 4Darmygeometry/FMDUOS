@@ -3,13 +3,14 @@
 
 如果这个蓝屏现象是你首次看到，请重启计算机。如果再次出现，请按照下列步骤操作：
          
-检查硬盘剩余容量以保证你有足够多的硬盘空间，并复制strings.com于操作系统目录(默
-认为 C:\FMDU\SYSDOS)，如果在错误的信息中提到是某个驱动问题，请卸载此驱动或者通
-过制造商来检查此驱动的更新。尝试更改视频适配器(显卡)。检查你的BIOS更新情况。取
-消BIOS存储中的选项例如缓存配置或者阴影配置，如果你要在安全模式下删除或者卸载您
-的软件及驱动，请重启您的电脑，鼠标单击或方向键选择高级选项，然后选择安全模式。
+检查硬盘剩余容量以保证你有足够多的硬盘空间，并复制strings.com/calcmd.com于操作
+系统目录(默认为 C:\FMDU\SYSDOS)，如果在错误的信息中提到是某个驱动问题，请卸载
+此驱动或者通过制造商来检查此驱动的更新。尝试更改视频适配器(显卡)。检查你的BIOS
+更新情况。取消BIOS存储中的选项例如缓存配置或者阴影配置，如果你要在安全模式下删
+除或者卸载您的软件及驱动，请重启您的电脑，鼠标单击或方向键选择高级选项，然后选
+择安全模式。
 
-技术信息：strings.com丢失
+技术信息：strings.com或calcmd.com丢失
 []
 :
 
@@ -21,15 +22,15 @@ Restart your computer when this is the first time you've seen this stop error sc
 reen,follow these steps when this screen appears again:
 
 Check the averable space to be sure you have adequate disk space,and copy string
-s.com to the path of FMDUOS(default path is C:\FMDU\SYSDOS),If a driver is ident
-ified in the stop message,disable the driver or check with the manufacturer for 
-driver updates.Try changing video adapterscheck with your hardware vendor for an
-y BIOS updates.Disable BIOS memory options such as caching or shadowing if you n
-eed tu use safe Mode to remove or disable software and device,restart your compu
-ter.Mouse clip and use vector key to select advanced startup options,and then se
-lect safe mode.
+s.com/calcmd.com to the path of FMDUOS(default path is C:\FMDU\SYSDOS),If a driv
+er is identified in the stop message,disable the driver or check with the manufa
+cturer for driver updates.Try changing video adapterscheck with your hardware ve
+ndor for any BIOS updates.Disable BIOS memory options such as caching or shadowi
+ng if you need tu use safe Mode to remove or disable software and device,restart
+ your computer.Mouse clip and use vector key to select advanced startup options,
+and then select safe mode.
 
-Techical information:missing strings.com
+Techical information:missing strings.com or calcmd.com
 :
 
 :bluescreen_missCN

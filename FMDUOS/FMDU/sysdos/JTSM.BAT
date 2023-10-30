@@ -4,46 +4,46 @@
 set wbox=black on +white
 set wbutton=black on +white
 set wbar=black on +white
-wbat FIX box @%0:thver
-if "%errorlevel%"=="1" goto sm1
-if "%errorlevel%"=="0" goto end
-if "%errorlevel%"=="100" goto end
+call w.bat FIX box @%0:thver
+if "%?%"=="1" goto sm1
+if "%?%"=="0" goto end
+if "%?%"=="100" goto end
 goto sm0
 
 :sm1
-wbat FIX box @%0:thver
-if "%errorlevel%"=="1" goto sm2
-if "%errorlevel%"=="0" goto end
-if "%errorlevel%"=="100" goto end
+call w.bat FIX box @%0:thver
+if "%?%"=="1" goto sm2
+if "%?%"=="0" goto end
+if "%?%"=="100" goto end
 goto sm1
 
 :sm2
-wbat FIX box @%0:thver
-if "%errorlevel%"=="1" goto sm3
-if "%errorlevel%"=="0" goto end
-if "%errorlevel%"=="100" goto end
+call w.bat FIX box @%0:thver
+if "%?%"=="1" goto sm3
+if "%?%"=="0" goto end
+if "%?%"=="100" goto end
 goto sm2
 
 :sm3
-wbat FIX box @%0:thver
-if "%errorlevel%"=="1" goto sm4
-if "%errorlevel%"=="0" goto end
-if "%errorlevel%"=="100" goto end
+call w.bat FIX box @%0:thver
+if "%?%"=="1" goto sm4
+if "%?%"=="0" goto end
+if "%?%"=="100" goto end
 goto sm3
 
 :sm4
-wbat FIX box @%0:thver
-if "%errorlevel%"=="1" goto sm5
-if "%errorlevel%"=="0" goto end
-if "%errorlevel%"=="100" goto end
+call w.bat FIX box @%0:thver
+if "%?%"=="1" goto sm5
+if "%?%"=="0" goto end
+if "%?%"=="100" goto end
 goto sm4
 
 :sm5
-wbat FIX box @%0:thver
+call w.bat FIX box @%0:thver
 cls
-if "%errorlevel%"=="1" goto movie
-if "%errorlevel%"=="0" goto end
-if "%errorlevel%"=="100" goto end
+if "%?%"=="1" goto movie
+if "%?%"=="0" goto end
+if "%?%"=="100" goto end
 goto sm5
 
 :thver [x]

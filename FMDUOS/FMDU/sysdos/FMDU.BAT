@@ -2,10 +2,6 @@
 cls
 echo Starting FreemenduetOS...
 if "%comspec%"=="%windir%\system32\cmd.exe" goto THerror
-alias chcp=call CP.bat
-alias graftabl=call CP.bat /G
-alias lfndir=lfncmd /c dir
-alias gbkcd=lfncmd /c cd
 SET TEMP=C:
 SET SYSDRV=C:
 SET FMDUDIR=C:\FMDU\SYSDOS
@@ -14,13 +10,20 @@ if exist wbat.ini ren wbat.ini gui.ini
 if not exist w.bat goto blackscreen
 if not exist wbat.com goto blackscreen
 if not exist GBKDOS.exe goto bluescreen_missCN
-alias type=call UTYPE.bat
 if exist LFNON.ini DOSLFN -Z:CP936UNI.GBK >nul
 echo 936>chcp.ini
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 if not exist strings.com goto bluescreen
+if not exist calcmd.com goto bluescreen
 if not exist fdapm.com goto bluescreen_missSR
 if not exist restart.com goto bluescreen_missSR
+rem ver>temp.ini
+rem strings freecom=read temp.ini,1
+rem strings freecom=find %freecom%,FreeCom
+rem if "%freecom%"=="0" set dircmd=/4
+rem if not "%freecom%"=="0" set dircmd=/4 /lfn
+rem set freecom=
+rem if exist temp.ini del temp.ini
 ctmouse /N>nul
 if exist %FMDUDIR%\metroio\onmetro.ini goto metroio
 rem -------------非metro启动方式----------------------
@@ -311,7 +314,7 @@ admin
 call w.bat box 1,60 (%$wtc% on %$wnc%) @fmdu.bat:srf_m
 if "%?%" == "1" goto main_m
 if "%?%" == "2" call w.bat box (%$wtc% on %$wnc%) @fmdu.bat:src_m
-if "%?%" == "3" chcp 437
+if "%?%" == "3" call cp 437
 goto main_m
 
 :srf_m
@@ -352,7 +355,7 @@ set wbat=
 if exist wbat.ini ren wbat.ini gui.ini
 if "%len%" == "TXT" goto notepad
 if "%len%" == "INI" goto notepad
-if not "%len%" == "BAT" GBKDOS.EXE /03>nul
+if not "%len%" == "BAT" GBKDOS.EXE>nul
 if "%len%" == "JPG" goto picview
 if "%len%" == "PNG" goto picview
 if "%len%" == "BMP" goto picview
@@ -362,7 +365,7 @@ if "%len%" == "DOC" goto docconfig
 if "%len%" == "PDF" goto pdfconfig
 if "%len%" == "EXE" call %fk0%\%gfile%
 if "%len%" == "COM" call %fk0%\%gfile%
-if not "%len%" == "BAT" GBKDOS.EXE /03>nul
+if not "%len%" == "BAT" GBKDOS.EXE>nul
 if "%len%" == "BAT" call %fk0%\%gfile%
 if exist gui.ini ren gui.ini wbat.ini
 set WBoxFrame="|~|| ||_|"
@@ -375,13 +378,13 @@ ctmouse>nul
 wbat fill (%$wtc% on %$dtc%)
 copy %FMDUDIR%\WSCREEN.0 %TEMP%\>nul
 wbat restore
-gbkcd "%fk0%"
+cd "%fk0%"
 goto admin_x
 
 :admin_f
 set folder=%wbat%
 if exist %FMDUDIR%\temp.txt del %FMDUDIR%\temp.txt
-GBKCD>cfg.tmp
+CD>cfg.tmp
 strings cfg=read cfg.tmp,1
 if "%cfg%" == "A:\" strings fc=sub %fc% , 1
 if "%cfg%" == "B:\" strings fc=sub %fc% , 1
@@ -412,12 +415,12 @@ if "%cfg%" == "Z:\" strings fc=sub %fc% , 1
 if exist cfg.tmp del cfg.tmp
 strings len=length %fk0%
 if "%len%"=="3" strings fk0=left %fk0% , 2
-gbkcd "%fk0%\%folder%"
+cd "%fk0%\%folder%"
 goto admin_x
 
 :admin_m
-gbkcd "%fk0%"
-GBKCD>cfg.tmp
+cd "%fk0%"
+CD>cfg.tmp
 strings cfg=read cfg.tmp,1
 if exist cfg.tmp del cfg.tmp
 if "%cfg%" == "A:\" goto findhd_CFG
@@ -446,8 +449,8 @@ if "%cfg%" == "W:\" goto findhd_CFG
 if "%cfg%" == "X:\" goto findhd_CFG
 if "%cfg%" == "Y:\" goto findhd_CFG
 if "%cfg%" == "Z:\" goto findhd_CFG
-gbkcd ..
-GBKCD>cfg.tmp
+cd ..
+CD>cfg.tmp
 strings cfg=read cfg.tmp,1
 if "%cfg%" == "A:\" goto findhd_CFG
 if "%cfg%" == "B:\" goto findhd_CFG
@@ -684,10 +687,10 @@ goto admin_x
 if exist cfg.tmp del cfg.tmp
 echo :r_all "%folder%" [x]>%FMDUDIR%\temp.txt
 echo 返回上级目录>>%FMDUDIR%\temp.txt
-LFNDIR /AD /B >>%FMDUDIR%\temp.txt
-if exist *.* LFNDIR /A-D /B >>%FMDUDIR%\temp.txt
+DIR /AD /B >>%FMDUDIR%\temp.txt
+if exist *.* DIR /A-D /B >>%FMDUDIR%\temp.txt
 echo :>>%FMDUDIR%\temp.txt
-GBKCD>%FMDUDIR%\path.txt
+CD>%FMDUDIR%\path.txt
 strings fk0=read %FMDUDIR%\path.txt,1
 goto admin_c
 
@@ -701,10 +704,10 @@ if "%$wnc%"=="" set $wnc=+white
 if "%$wtc%"=="" set $wtc=black
 copy %FMDUDIR%\WSCREEN.0 %TEMP%\ >nul
 ctmouse >nul
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 wbat fill (%$wtc% on %$dtc%)
 wbat restore
-gbkcd "%fk0%"
+cd "%fk0%"
 goto admin_x
 
 :pptconfig
@@ -721,7 +724,7 @@ ren %SYSDRV%\wine\win.ini wine.ini
 SET PATH=%SYSDRV%\FMDU\NTFS;%SYSDRV%\FMDU\SYSX86;%FMDUDIR%
 SET TEMP=C:
 ctmouse>nul
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 goto main
 
 :pptchoice
@@ -754,7 +757,7 @@ ren %SYSDRV%\wine\win.ini wine.ini
 SET PATH=%SYSDRV%\FMDU\NTFS;%SYSDRV%\FMDU\SYSX86;%FMDUDIR%
 SET TEMP=C:
 ctmouse>nul
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 goto main
 
 :docchoice
@@ -787,7 +790,7 @@ ren %SYSDRV%\wine\win.ini wine.ini
 SET PATH=%SYSDRV%\FMDU\NTFS;%SYSDRV%\FMDU\SYSX86;%FMDUDIR%
 SET TEMP=C:
 ctmouse>nul
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 goto main
 
 :pdfchoice
@@ -835,7 +838,7 @@ if "%$dtc%" == "brown" ren %SYSDRV%\wine\brown.bmp wallpr.bmp
 if "%$dtc%" == "+brown" ren %SYSDRV%\wine\yellow.bmp wallpr.bmp
 if "%$dtc%" == "white" ren %SYSDRV%\wine\brgray.bmp wallpr.bmp
 if "%$dtc%" == "+white" ren %SYSDRV%\wine\white.bmp wallpr.bmp
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 goto main
 
 :network
@@ -847,16 +850,16 @@ goto main_m
 [1.进入浏览器]
 
 :network_x
-GBKDOS.EXE /03>nul
+GBKDOS.EXE>nul
 call %SYSDRV%\FMDUpro\DILLO\dillo.bat
 ctmouse>nul
-GBKDOS.EXE /03>nul
+GBKDOS.EXE /00>nul
 goto main
 
 :recycle
 if not exist %FMDUDIR%\temp.txt echo=>%FMDUDIR%\temp.txt
 echo :r_dir "回收站" [x]>%FMDUDIR%\temp.txt
-LFNDIR %SYSDRV%\recycle\*.* /B>>%FMDUDIR%\temp.txt
+DIR %SYSDRV%\recycle\*.* /B>>%FMDUDIR%\temp.txt
 call w.bat list 4,1 @%FMDUDIR%\temp.txt:r_dir
 if errorlevel 254 goto main_m
 set gfile=%wbat%
@@ -984,13 +987,13 @@ if "%$wtc%"=="" set $wtc=black
 wbat fill (%$wtc% on %$dtc%)
 copy %FMDUDIR%\WSCREEN.0 %TEMP%\>nul
 wbat restore
-gbkcd "%fk0%"
+cd "%fk0%"
 goto admin_x
 
 
 :jsb
-if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\PYL\PYL.EXE>nul
-if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ call %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ LH %SYSDRV%\FMDU\PYL\PYL.EXE>nul
+if not exist %SYSDRV%\FMDU\PYL\PYL.YAZ LH %SYSDRV%\FMDU\GBKIN\GBKIN.EXE>nul
 echo.>%SYSDRV%\FMDU\PYL\PYL.YAZ
 cls
 wbat fill (%$wtc% on %$dtc%)
@@ -1057,7 +1060,7 @@ set wrb=
 set len=
 set wbat=
 set fk0=cmd
-if exist com.ini echo 安全模式
+if exist com.ini wbat text 1,1 (+white on black) "安全模式"
 goto cmd
 
 :cmd
@@ -1102,7 +1105,7 @@ set fc=.
 cls
 set random=
 set len=
-chcp 936
+call cp 936
 if exist com.ini goto shutdown
 if not exist com.ini goto main_m
 
@@ -1574,7 +1577,7 @@ echo magenta>%SYSDRV%\FMDU\colors\wincolor\%fn1%.txt
 goto main
 
 :wnc12
-echo +magenta>%SYSDRV%\JFMDU\colors\wincolor\%fn1%.txt
+echo +magenta>%SYSDRV%\FMDU\colors\wincolor\%fn1%.txt
 goto main
 
 :wnc13
@@ -1676,26 +1679,28 @@ rem ------------内核板块------------
 :
 
 :mainmenu
-wbat box @FMDU.bat:mainmenu_m
+call w.bat box @FMDU.bat:mainmenu_m
 if "%?%"=="1" goto kerinf
 if "%?%"=="2" goto factorymode
 if "%?%"=="3" goto information
+if "%?%"=="4" goto memenv
 if "%?%" == "0" goto controlpanel
 if "%?%"=="100" goto controlpanel
-goto exitkernel
+goto controlpanel
 
 :kerinf
-wbat box @FMDU.bat:kernel_m
+call w.bat box @FMDU.bat:kernel_m
 goto mainmenu
           
 :information
-wbat box "THJT corporation all rights reserved" 确定
+call w.bat box "THJT corporation all rights reserved" 确定
 goto mainmenu
 
 :mainmenu_m "内核调试主菜单"[x]
 [1.内核信息》]  
 [2.工厂模式》]  
 [3.企业信息》]
+[4.内存与环境变量大小》]
 
 :factorymode
 call w.bat box @FMDU.bat:factorymode_m
@@ -1717,7 +1722,7 @@ if "%?%"=="100" goto mainmenu
 [6+.综合测试》]
 
 :sndtest
-beep
+command.com /c beep
 call w.bat box @FMDU.bat:sndtest_m
 if "%?%"=="1" goto soundhelp
 if "%?%"=="2" goto sndtest
@@ -2016,9 +2021,66 @@ goto factorymode
 嘚瑟 牛丼 叆叇 西塱 椪糖 刌民 囧 峧 卝 衎 嬲 嫐
 [全部汉字显示正常] [出现乱码]
 :
+
+:memenv
+strings memtotal1=memtotal
+strings memfree1=memfree
+strings emstotal1=emstotal
+strings emsfree1=emsfree
+strings xmstotal1=xmstotal
+strings xmsfree1=xmsfree
+strings umblarge1=umblarge
+strings envsize1=envsize
+strings envfree1=envfree
+calcmd %memtotal1%/1024>temp.txt
+echo KB>>temp.txt
+calcmd %memfree1%/1024>>temp.txt
+echo KB>>temp.txt
+calcmd %emstotal1%/1024/1024>>temp.txt
+echo MB>>temp.txt
+calcmd %emsfree1%/1024/1024>>temp.txt
+echo MB>>temp.txt
+calcmd %xmstotal1%/1024/1024>>temp.txt
+echo MB>>temp.txt
+calcmd %xmsfree1%/1024/1024>>temp.txt
+echo MB>>temp.txt
+calcmd %umblarge1%/1024>>temp.txt
+echo KB>>temp.txt
+calcmd %envsize1%/1024>>temp.txt
+echo KB>>temp.txt
+calcmd %envfree1%/1024>>temp.txt
+echo KB>>temp.txt
+echo %envfree1%B>>temp.txt
+strings memtotal1=read temp.txt,1
+strings memfree1=read temp.txt,2
+strings emstotal1=read temp.txt,3
+strings emsfree1=read temp.txt,4
+strings xmstotal1=read temp.txt,5
+strings xmsfree1=read temp.txt,6
+strings umblarge1=read temp.txt,7
+strings envsize1=read temp.txt,8
+strings envfree1=read temp.txt,9
+strings envfree2=read temp.txt,10
+wbat box @fmdu.bat:memenv_i
+for %%a in (memtotal1 memfree1 emstotal1 emsfree1 xmstotal1 xmsfree1 umblarge1 envsize1 envfree1 envfree2) do set %%a=
+if exist temp.txt del temp.txt
+goto mainmenu
+
+:memenv_i "内存与环境变量大小" [X]
+基本内存大小:%memtotal1%
+基本内存可用空间:%memfree1%
+EMS内存大小:%emstotal1%
+EMS内存可用空间:%emsfree1%
+XMS内存大小:%xmstotal1%
+XMS内存可用空间:%xmsfree1%
+UMB内存可用空间:%umblarge1%
+环境变量大小:%envsize1%
+环境变量可用空间:%envfree1%(%envfree2%)
+[确定]
+:
 rem --------------------------------
 :tablet
-chcp 936
+call cp 936
 set folder=
 goto cfsf
 
@@ -2414,7 +2476,7 @@ goto shutdown
 
 :shutdown
 cls
-echo 正在关机...
+wbat text 1,1 (+white on black) "正在关机..."
 if exist %SYSDRV%\FMDU\PYL\PYL.YAZ del %SYSDRV%\FMDU\PYL\PYL.YAZ
 if exist %FMDUDIR%\WSCREEN.0 del %FMDUDIR%\WSCREEN.0>nul
 if exist safemode.txt del safemode.txt >nul
@@ -2426,7 +2488,6 @@ if exist wbat.ini ren wbat.ini gui.ini
 
 :restart
 cls
-chcp 437
 if exist %SYSDRV%\FMDU\PYL\PYL.YAZ del %SYSDRV%\FMDU\PYL\PYL.YAZ
 if exist %FMDUDIR%\WSCREEN.0 del %FMDUDIR%\WSCREEN.0>nul
 if exist safemode.txt del safemode.txt >nul
@@ -2439,7 +2500,7 @@ if exist wbat.ini ren wbat.ini gui.ini
 :exit1
 cls
 if exist %SYSDRV%\FMDU\PYL\PYL.YAZ del %SYSDRV%\FMDU\PYL\PYL.YAZ
-chcp 437
+call cp 437
 echo start to go to the real cmd
 prompt FMDU@FMDU-PC:$P$$>nul
 if exist %FMDUDIR%\WSCREEN.0 del %FMDUDIR%\WSCREEN.0>nul
