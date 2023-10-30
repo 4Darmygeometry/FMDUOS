@@ -353,6 +353,7 @@ set $wtc=
 set ?=
 set wbat=
 if exist wbat.ini ren wbat.ini gui.ini
+strings len=upper %len%
 if "%len%" == "TXT" goto notepad
 if "%len%" == "INI" goto notepad
 if not "%len%" == "BAT" GBKDOS.EXE>nul
