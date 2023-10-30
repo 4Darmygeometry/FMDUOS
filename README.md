@@ -2,6 +2,9 @@
 FMDUOS is an operating system make by me, base on FreeDOS and GBKDOS(CJKDOS) model.
 FMDUOS是我做的操作系统(半成品)，基于FreeDOS和GBKDOS(CJKDOS)模块。
 
+FMDUOS can run in DOSBOX-X,MS-DOS7.10(Windows 98 kernel), and FreeDOS, it's also can run independently.
+FMDUOS支持在DOSBOX-X,MS-DOS7.10(Windows 98内核),FreeDOS下运行,也可独立启动运行。
+
 2018年
 军拓操作系统开始研制
 
